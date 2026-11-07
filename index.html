@@ -2,121 +2,199 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#071522">
-  <meta name="description" content="SKYFORGE FLIGHT — experiência de simulação aérea 3D.">
-  <title>SKYFORGE FLIGHT</title>
-  <link rel="stylesheet" href="./style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07111d">
+
+    <title>SKYFORGE FLIGHT</title>
+
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-  <div id="loading" class="loading-screen">
-    <div class="loading-content">
-      <div class="loading-logo">SKYFORGE <span>FLIGHT</span></div>
-      <div class="loading-bar"><div></div></div>
-      <p id="loadingMessage">INICIALIZANDO SISTEMAS DE VOO...</p>
+
+    <div id="game">
+
+        <header class="topbar">
+
+            <div class="brand">
+                <div class="brand-icon">✈</div>
+
+                <div>
+                    <h1>SKYFORGE</h1>
+                    <span>FLIGHT SIMULATOR</span>
+                </div>
+            </div>
+
+            <div class="top-actions">
+
+                <div class="flight-indicator">
+                    <span class="indicator-dot"></span>
+                    SISTEMA ONLINE
+                </div>
+
+                <button id="cameraButton" class="top-button">
+                    CÂMERA
+                </button>
+
+                <button id="menuButton" class="top-button">
+                    MENU
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <main id="flightScene">
+
+            <div id="sceneLabel">
+                SKYFORGE INTERNATIONAL
+            </div>
+
+            <section id="flightHUD">
+
+                <div class="hud-card">
+                    <span>VELOCIDADE</span>
+                    <strong id="speed">0</strong>
+                    <small>KM/H</small>
+                </div>
+
+                <div class="hud-card">
+                    <span>ALTITUDE</span>
+                    <strong id="altitude">0</strong>
+                    <small>FT</small>
+                </div>
+
+                <div class="hud-card">
+                    <span>SUBIDA / DESCIDA</span>
+                    <strong id="verticalSpeed">0</strong>
+                    <small>FT/MIN</small>
+                </div>
+
+                <div class="hud-card">
+                    <span>MOTORES</span>
+                    <strong id="enginePower">70</strong>
+                    <small>% POTÊNCIA</small>
+                </div>
+
+            </section>
+
+            <div id="crosshair">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+
+
+            <div id="flightStatus">
+                <span class="status-dot"></span>
+                <span id="statusText">AGUARDANDO INICIALIZAÇÃO</span>
+            </div>
+
+
+            <section id="touchControls">
+
+                <div class="direction-controls">
+
+                    <button id="touchUp">▲</button>
+
+                    <div class="direction-middle">
+                        <button id="touchLeft">◀</button>
+                        <button id="touchDown">▼</button>
+                        <button id="touchRight">▶</button>
+                    </div>
+
+                </div>
+
+                <div class="throttle-controls">
+                    <button id="touchThrottleUp">
+                        + POTÊNCIA
+                    </button>
+
+                    <button id="touchThrottleDown">
+                        - POTÊNCIA
+                    </button>
+                </div>
+
+            </section>
+
+
+            <section id="startScreen" class="start-screen">
+
+                <div class="start-content">
+
+                    <div class="start-label">
+                        FLIGHT EXPERIENCE
+                    </div>
+
+                    <h2>DOMINE OS CÉUS.</h2>
+
+                    <p>
+                        Prepare sua aeronave, acelere os motores
+                        e explore um mundo de possibilidades.
+                    </p>
+
+                    <button id="startButton">
+                        INICIAR VOO
+                        <span>→</span>
+                    </button>
+
+                    <div class="start-footer">
+                        EXPERIÊNCIA 3D · SIMULADOR DE VOO
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section id="flightMenu" class="modal hidden">
+
+                <div class="menu-panel">
+
+                    <div class="menu-heading">
+                        <span>SKYFORGE FLIGHT</span>
+                        <button id="closeMenu">✕</button>
+                    </div>
+
+                    <h2>MENU DE VOO</h2>
+
+                    <p>Gerencie sua experiência de voo.</p>
+
+                    <button id="resumeFlight" class="menu-option">
+                        CONTINUAR VOO
+                    </button>
+
+                    <button id="returnHangar" class="menu-option secondary">
+                        VOLTAR AO INÍCIO
+                    </button>
+
+                    <div class="menu-footer">
+                        SKYFORGE FLIGHT SIMULATOR
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <footer class="footer">
+
+            <span>SKYFORGE FLIGHT</span>
+
+            <span>
+                W / S: NARIZ · A / D: DIREÇÃO · SHIFT: ACELERAR
+            </span>
+
+        </footer>
+
     </div>
-  </div>
 
-  <div id="game">
-    <header class="topbar">
-      <div class="brand">
-        <strong>SKYFORGE <span>FLIGHT</span></strong>
-        <small>ADVANCED FLIGHT SIMULATION</small>
-      </div>
+    <script type="module" src="./main.js"></script>
 
-      <div class="top-actions">
-        <button id="cameraButton" class="interface-button">CÂMERA</button>
-        <button id="menuButton" class="interface-button">MENU</button>
-      </div>
-    </header>
-
-    <main id="flightScene">
-      <div id="sceneLabel">AEROPORTO INTERNACIONAL</div>
-
-      <div id="flightHUD" class="flight-hud">
-        <div class="hud-item">
-          <small>VELOCIDADE</small>
-          <strong id="speed">000</strong>
-          <span>KM/H</span>
-        </div>
-
-        <div class="hud-item">
-          <small>ALTITUDE</small>
-          <strong id="altitude">0000</strong>
-          <span>FT</span>
-        </div>
-
-        <div class="hud-item">
-          <small>VELOCIDADE VERTICAL</small>
-          <strong id="verticalSpeed">000</strong>
-          <span>FT/MIN</span>
-        </div>
-
-        <div class="hud-item">
-          <small>MOTOR</small>
-          <strong id="enginePower">000</strong>
-          <span>%</span>
-        </div>
-      </div>
-
-      <div id="crosshair">+</div>
-
-      <div id="flightStatus">
-        <span class="status-dot"></span>
-        <span id="statusText">AERONAVE NO SOLO</span>
-      </div>
-
-      <div id="touchControls" class="touch-controls">
-        <div class="touch-direction">
-          <button id="touchLeft" aria-label="Virar à esquerda">◀</button>
-          <button id="touchUp" aria-label="Subir">▲</button>
-          <button id="touchDown" aria-label="Descer">▼</button>
-          <button id="touchRight" aria-label="Virar à direita">▶</button>
-        </div>
-
-        <div class="touch-power">
-          <button id="touchThrottleUp">POTÊNCIA +</button>
-          <button id="touchThrottleDown">POTÊNCIA -</button>
-        </div>
-      </div>
-    </main>
-
-    <section id="startScreen" class="start-screen">
-      <div class="welcome">
-        <div class="eyebrow">THE WORLD IS YOUR RUNWAY</div>
-        <h1>TAKE OFF.<br><span>EXPLORE.</span></h1>
-        <p>Descubra o mundo a partir de uma nova perspectiva.</p>
-
-        <button id="startButton" class="primary-button">
-          INICIAR EXPERIÊNCIA <span>→</span>
-        </button>
-
-        <div class="start-caption">FLIGHT SYSTEMS READY</div>
-      </div>
-    </section>
-
-    <section id="flightMenu" class="modal hidden">
-      <div class="menu-card">
-        <button id="closeMenu" class="close-button" aria-label="Fechar menu">✕</button>
-        <div class="eyebrow">FLIGHT MANAGEMENT</div>
-        <h2>PAINEL DE VOO</h2>
-        <p>Gerencie sua experiência de voo.</p>
-
-        <div class="menu-options">
-          <button id="returnHangar">VOLTAR AO HANGAR</button>
-          <button id="resumeFlight">CONTINUAR VOANDO</button>
-        </div>
-      </div>
-    </section>
-
-    <footer class="bottom-bar">
-      <span>SKYFORGE FLIGHT</span>
-      <span>REAL-TIME 3D ENVIRONMENT</span>
-    </footer>
-  </div>
-
-  <script type="module" src="./main.js"></script>
 </body>
 </html>
