@@ -3,643 +3,515 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090b18">
-
-<title>Scratch Universe | Explore o universo dos jogos</title>
-
-<meta name="description" content="Descubra, pesquise e jogue milhares de projetos incríveis do Scratch.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#101722">
+<title>SKYFORGE 2.0 | Aircraft Simulator</title>
 
 <style>
-/* =========================================
-   SCRATCH UNIVERSE — DESIGN SYSTEM
-========================================= */
-
-:root {
-  --background: #080a16;
-  --surface: #111528;
-  --surface2: #191e35;
-  --surface3: #222944;
-  --primary: #8057ff;
-  --secondary: #00d4ff;
-  --pink: #ff4db8;
-  --text: #ffffff;
-  --muted: #9ba5c2;
-  --border: rgba(255,255,255,.09);
-  --radius: 17px;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  min-height: 100vh;
-  background:
-    radial-gradient(ellipse at 10% 0%, rgba(94,56,200,.17), transparent 40%),
-    radial-gradient(ellipse at 90% 15%, rgba(0,180,255,.09), transparent 35%),
-    var(--background);
-  color: var(--text);
-  font-family: Inter, Arial, sans-serif;
-  overflow-x: hidden;
-}
-
-button, input {
-  font: inherit;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
+:root{
+  --bg:#101722;
+  --panel:#172333;
+  --panel2:#202f42;
+  --accent:#42bdf1;
+  --gold:#ffbd59;
+  --white:#f0f5fb;
+  --muted:#9aaabd;
+  --border:rgba(255,255,255,.12);
+  --green:#54d6a0;
+  --red:#ff7272;
 }
 
-.hidden {
-  display: none !important;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-/* =========================================
-   HEADER
-========================================= */
-
-.header {
-  height: 76px;
-  padding: 0 6%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(8,10,22,.88);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  font-size: 23px;
-  font-weight: 900;
-  white-space: nowrap;
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
 }
 
-.logo-icon {
-  width: 39px;
-  height: 39px;
-  display: grid;
-  place-items: center;
-  border-radius: 13px;
-  background: linear-gradient(135deg, #8057ff, #00cfff);
-  box-shadow: 0 0 25px rgba(128,87,255,.4);
-  font-size: 21px;
+button{
+  font-family:inherit;
+  cursor:pointer;
+  color:inherit;
 }
 
-.logo span {
-  color: #a58aff;
+#app{
+  position:fixed;
+  inset:0;
 }
 
-.navigation {
-  display: flex;
-  gap: 28px;
-  align-items: center;
+#viewport{
+  position:absolute;
+  inset:0;
 }
 
-.navigation a {
-  color: var(--muted);
-  font-size: 14px;
-  transition: .2s;
+#viewport canvas{
+  display:block;
+  width:100%;
+  height:100%;
+  touch-action:none;
 }
 
-.navigation a:hover,
-.navigation a.active {
-  color: white;
+#topbar{
+  position:absolute;
+  z-index:10;
+  top:0;
+  left:0;
+  right:0;
+  height:66px;
+  padding:0 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(12,20,31,.93);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(14px);
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.logo{
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:2px;
 }
 
-.header-button {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: white;
-  padding: 11px 16px;
-  border-radius: 12px;
-  transition: .2s;
+.logo span{
+  color:var(--accent);
 }
 
-.header-button:hover {
-  background: var(--surface3);
+.subtitle{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+  letter-spacing:1px;
 }
 
-.mobile-menu {
-  display: none;
+.top-actions{
+  display:flex;
+  gap:8px;
 }
 
-/* =========================================
-   HERO
-========================================= */
-
-.hero {
-  padding: 85px 7% 65px;
-  text-align: center;
-  position: relative;
-}
-
-.hero-label {
-  display: inline-block;
-  padding: 9px 17px;
-  background: rgba(128,87,255,.12);
-  border: 1px solid rgba(128,87,255,.3);
-  color: #c4b3ff;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-bottom: 25px;
+.btn{
+  border:1px solid var(--border);
+  background:var(--panel2);
+  border-radius:7px;
+  padding:10px 13px;
+  font-size:11px;
+  font-weight:bold;
+  transition:.15s;
 }
 
-.hero h1 {
-  max-width: 850px;
-  margin: auto;
-  font-size: clamp(38px, 6vw, 72px);
-  line-height: 1.08;
-  letter-spacing: -3px;
+.btn:hover{
+  filter:brightness(1.2);
 }
 
-.gradient-text {
-  background: linear-gradient(90deg,#a78bfa,#36d9ff,#ff73cb);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+.btn-blue{
+  background:#087daa;
+  border-color:#37b8ec;
 }
 
-.hero-description {
-  max-width: 610px;
-  margin: 23px auto 32px;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.8;
+.btn-gold{
+  background:#92601b;
+  border-color:var(--gold);
 }
-
-/* =========================================
-   SEARCH
-========================================= */
 
-.search-container {
-  max-width: 720px;
-  margin: auto;
-  position: relative;
+.btn-danger{
+  background:#6c2d36;
+  border-color:#b74d5c;
 }
 
-.search-box {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 9px 10px 9px 20px;
-  background: #171c32;
-  border: 1px solid rgba(150,130,255,.3);
-  border-radius: 17px;
-  box-shadow: 0 15px 60px rgba(0,0,0,.3);
-  transition: .25s;
+#leftPanel{
+  position:absolute;
+  z-index:8;
+  top:82px;
+  left:14px;
+  bottom:14px;
+  width:265px;
+  background:rgba(18,29,43,.96);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:14px;
+  overflow-y:auto;
+  backdrop-filter:blur(15px);
 }
 
-.search-box:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 0 30px rgba(128,87,255,.2);
+.section-title{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:.5px;
 }
 
-.search-icon {
-  font-size: 20px;
-  color: #a78bfa;
+.section-subtitle{
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.6;
+  margin-top:5px;
+  margin-bottom:13px;
 }
 
-.search-box input {
-  flex: 1;
-  min-width: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: white;
-  font-size: 15px;
-  padding: 13px 0;
+.tabs{
+  display:flex;
+  gap:5px;
+  margin-bottom:13px;
 }
 
-.search-box input::placeholder {
-  color: #77809c;
+.tab{
+  flex:1;
+  padding:9px 4px;
+  border:1px solid var(--border);
+  background:#202e40;
+  border-radius:6px;
+  font-size:10px;
+  font-weight:bold;
 }
 
-.search-button {
-  border: 0;
-  border-radius: 12px;
-  padding: 14px 23px;
-  background: linear-gradient(135deg,#8057ff,#5b42dc);
-  color: white;
-  font-weight: bold;
-  transition: .2s;
+.tab.active{
+  background:#155273;
+  border-color:var(--accent);
+  color:white;
 }
 
-.search-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.15);
+#partGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
 }
 
-.search-hints {
-  display: flex;
-  justify-content: center;
-  gap: 9px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  color: var(--muted);
-  font-size: 12px;
+.part-card{
+  min-width:0;
+  padding:10px 5px;
+  border-radius:8px;
+  background:#202e40;
+  border:1px solid var(--border);
+  text-align:center;
+  transition:.15s;
 }
 
-.search-hints button {
-  background: transparent;
-  color: #b9a9ff;
-  border: 1px solid var(--border);
-  padding: 7px 12px;
-  border-radius: 20px;
+.part-card:hover,
+.part-card.active{
+  border-color:var(--accent);
+  background:#17415a;
 }
 
-.search-hints button:hover {
-  background: var(--surface2);
+.part-icon{
+  font-size:23px;
+  margin-bottom:7px;
 }
 
-/* =========================================
-   GENERAL SECTIONS
-========================================= */
-
-.section {
-  padding: 30px 6% 55px;
+.part-card strong{
+  display:block;
+  font-size:10px;
 }
 
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 25px;
+.part-card small{
+  display:block;
+  font-size:9px;
+  color:var(--muted);
+  margin-top:4px;
 }
 
-.section-heading h2 {
-  font-size: 25px;
-  letter-spacing: -.5px;
+.separator{
+  height:1px;
+  background:var(--border);
+  margin:15px 0;
 }
 
-.section-heading p {
-  margin-top: 7px;
-  font-size: 13px;
-  color: var(--muted);
+.action-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
 }
 
-.text-button {
-  border: 0;
-  background: transparent;
-  color: #b49cff;
-  font-size: 13px;
-  font-weight: bold;
+.action-grid button{
+  padding:10px 5px;
+  font-size:10px;
 }
 
-/* =========================================
-   CATEGORIES
-========================================= */
-
-.categories {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding: 3px 0 15px;
+#stats{
+  display:grid;
+  gap:9px;
 }
 
-.category {
-  flex-shrink: 0;
-  padding: 12px 18px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  color: #c3c9dc;
-  border-radius: 12px;
-  transition: .2s;
+.stat{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:10px;
+  color:var(--muted);
 }
 
-.category:hover,
-.category.selected {
-  background: rgba(128,87,255,.2);
-  border-color: var(--primary);
-  color: white;
+.stat strong{
+  color:white;
 }
-
-/* =========================================
-   GAME GRID
-========================================= */
 
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(4,minmax(0,1fr));
-  gap: 23px;
+#statusText{
+  padding:10px;
+  background:#102c3c;
+  border:1px solid rgba(66,189,241,.25);
+  border-radius:7px;
+  font-size:10px;
+  line-height:1.5;
+  color:#b9e5f8;
+  margin-top:12px;
 }
 
-.game-card {
-  min-width: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: var(--surface);
-  transition: transform .25s, border-color .25s;
-  cursor: pointer;
+#rightPanel{
+  position:absolute;
+  z-index:8;
+  top:82px;
+  right:14px;
+  width:210px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(18,29,43,.94);
+  backdrop-filter:blur(15px);
 }
 
-.game-card:hover {
-  transform: translateY(-6px);
-  border-color: rgba(128,87,255,.65);
+#rightPanel h3{
+  font-size:12px;
+  margin-bottom:12px;
 }
 
-.game-image {
-  width: 100%;
-  aspect-ratio: 16/10;
-  object-fit: cover;
-  display: block;
-  background: var(--surface3);
+#rightPanel p{
+  font-size:10px;
+  line-height:1.9;
+  color:var(--muted);
 }
 
-.game-info {
-  padding: 15px;
+#rightPanel b{
+  color:white;
 }
 
-.game-title {
-  font-size: 15px;
-  font-weight: bold;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+#selectedName{
+  margin-top:12px;
+  color:var(--gold);
+  font-size:11px;
 }
 
-.game-author {
-  margin-top: 8px;
-  color: var(--muted);
-  font-size: 12px;
+#hint{
+  position:absolute;
+  z-index:5;
+  left:50%;
+  bottom:17px;
+  transform:translateX(-50%);
+  background:rgba(12,20,31,.88);
+  border:1px solid var(--border);
+  border-radius:25px;
+  padding:10px 16px;
+  font-size:10px;
+  color:#d8e8f5;
+  white-space:nowrap;
+  pointer-events:none;
 }
 
-.game-stats {
-  display: flex;
-  gap: 13px;
-  margin-top: 13px;
-  color: #aab3ce;
-  font-size: 11px;
+#flightHUD{
+  display:none;
+  position:absolute;
+  z-index:9;
+  top:80px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 17px;
+  background:rgba(9,17,27,.9);
+  border:1px solid var(--border);
+  border-radius:10px;
+  display:none;
+  gap:22px;
 }
 
-.game-tag {
-  display: inline-block;
-  margin-top: 12px;
-  color: #bdaaff;
-  font-size: 10px;
-  background: rgba(128,87,255,.13);
-  padding: 5px 9px;
-  border-radius: 20px;
+.hud-item{
+  text-align:center;
+  min-width:48px;
 }
 
-/* =========================================
-   LOADING AND EMPTY STATES
-========================================= */
-
-.status-message {
-  grid-column: 1/-1;
-  text-align: center;
-  padding: 55px 15px;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius);
-  background: rgba(255,255,255,.015);
+.hud-item small{
+  display:block;
+  font-size:9px;
+  color:var(--muted);
+  margin-bottom:5px;
 }
 
-.status-message h3 {
-  margin-bottom: 10px;
+.hud-item strong{
+  font-size:18px;
 }
 
-.status-message p {
-  color: var(--muted);
-  line-height: 1.7;
-  font-size: 13px;
+.hud-item span{
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:3px;
 }
 
-.loader {
-  width: 38px;
-  height: 38px;
-  margin: 0 auto 20px;
-  border: 3px solid #30334d;
-  border-top-color: #a78bfa;
-  border-radius: 50%;
-  animation: spin .8s linear infinite;
+#flightControls{
+  display:none;
+  position:absolute;
+  z-index:12;
+  bottom:20px;
+  left:0;
+  right:0;
+  justify-content:space-between;
+  padding:0 18px;
+  pointer-events:none;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.control-group{
+  display:flex;
+  gap:8px;
+  pointer-events:auto;
 }
-
-/* =========================================
-   PLAYER MODAL
-========================================= */
 
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: rgba(0,0,0,.88);
-  backdrop-filter: blur(12px);
-  padding: 20px;
-  overflow-y: auto;
+.flight-btn{
+  width:53px;
+  height:53px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(13,34,49,.88);
+  font-size:18px;
+  font-weight:bold;
+  touch-action:none;
 }
 
-.modal.open {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.flight-btn:active{
+  background:#087daa;
 }
 
-.modal-content {
-  width: min(100%,1000px);
-  background: #111528;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
+#notification{
+  position:absolute;
+  z-index:30;
+  top:78px;
+  left:50%;
+  transform:translate(-50%,-10px);
+  padding:12px 18px;
+  background:#163a4b;
+  border:1px solid var(--accent);
+  border-radius:8px;
+  font-size:11px;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  text-align:center;
 }
 
-.modal-header {
-  padding: 17px 22px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+#notification.visible{
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
-.modal-header h2 {
-  font-size: 18px;
+#loading{
+  position:absolute;
+  z-index:100;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:#101722;
+  font-weight:900;
+  font-size:22px;
 }
 
-.close-modal {
-  border: 0;
-  background: var(--surface3);
-  color: white;
-  width: 37px;
-  height: 37px;
-  border-radius: 10px;
-  font-size: 20px;
+#loading span{
+  color:var(--accent);
 }
 
-.player-frame {
-  display: block;
-  width: 100%;
-  aspect-ratio: 16/9;
-  border: 0;
-  background: black;
+body.flying #leftPanel,
+body.flying #rightPanel,
+body.flying #hint{
+  display:none!important;
 }
 
-.modal-footer {
-  padding: 18px 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
-  flex-wrap: wrap;
+body.flying #flightHUD{
+  display:flex;
 }
 
-.play-external {
-  padding: 11px 17px;
-  background: var(--primary);
-  color: white;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 13px;
+body.flying #flightControls{
+  display:flex;
 }
 
-/* =========================================
-   FOOTER
-========================================= */
+@media(max-width:800px){
+  #rightPanel{
+    display:none;
+  }
 
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 35px 6%;
-  margin-top: 30px;
-  color: var(--muted);
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
+  #leftPanel{
+    width:215px;
+  }
 
-.footer strong {
-  color: white;
-}
+  #topbar{
+    padding:0 10px;
+  }
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+  .logo{
+    font-size:16px;
+  }
 
-@media(max-width:1000px) {
-  .game-grid {
-    grid-template-columns: repeat(3,minmax(0,1fr));
+  .btn{
+    padding:9px 8px;
+    font-size:9px;
   }
 }
 
-@media(max-width:700px) {
-  .header {
-    height: 65px;
-    padding: 0 5%;
+@media(max-width:560px){
+  #leftPanel{
+    top:auto;
+    left:7px;
+    right:7px;
+    bottom:7px;
+    width:auto;
+    height:210px;
+    padding:10px;
   }
 
-  .logo {
-    font-size: 19px;
+  .section-subtitle{
+    display:none;
   }
 
-  .navigation {
-    display: none;
-    position: absolute;
-    top: 65px;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: #111528;
-    flex-direction: column;
-    align-items: stretch;
+  #partGrid{
+    display:flex;
+    overflow-x:auto;
+    padding-bottom:5px;
   }
 
-  .navigation.show {
-    display: flex;
+  .part-card{
+    min-width:105px;
   }
 
-  .mobile-menu {
-    display: block;
+  #leftPanel .separator,
+  #stats,
+  #statusText{
+    display:none;
   }
 
-  .header-actions .header-button {
-    display: none;
+  #hint{
+    bottom:226px;
+    font-size:9px;
   }
 
-  .hero {
-    padding: 65px 5% 45px;
+  #flightHUD{
+    top:70px;
+    gap:9px;
+    padding:9px;
   }
 
-  .hero h1 {
-    letter-spacing: -1.5px;
+  .hud-item strong{
+    font-size:14px;
   }
 
-  .hero-description {
-    font-size: 14px;
+  body.flying #leftPanel{
+    display:none!important;
   }
 
-  .search-box {
-    padding-left: 13px;
+  #flightControls{
+    bottom:18px;
+    padding:0 9px;
   }
 
-  .search-button {
-    padding: 12px 13px;
-    font-size: 12px;
-  }
-
-  .section {
-    padding: 25px 5% 40px;
-  }
-
-  .game-grid {
-    grid-template-columns: repeat(2,minmax(0,1fr));
-    gap: 12px;
-  }
-
-  .game-info {
-    padding: 11px;
-  }
-
-  .game-title {
-    font-size: 13px;
-  }
-
-  .game-stats {
-    gap: 7px;
-    font-size: 10px;
-  }
-
-  .section-heading h2 {
-    font-size: 21px;
-  }
-}
-
-@media(max-width:370px) {
-  .game-grid {
-    grid-template-columns: 1fr;
+  .flight-btn{
+    width:46px;
+    height:46px;
   }
 }
 </style>
@@ -647,246 +519,1664 @@ a {
 
 <body>
 
-<!-- HEADER -->
+<div id="loading">SKY<span>FORGE</span> 2.0</div>
 
-<header class="header">
+<div id="app">
 
-  <a href="#" class="logo">
-    <div class="logo-icon">✦</div>
-    SCRATCH <span>UNIVERSE</span>
-  </a>
-
-  <nav class="navigation" id="navigation">
-    <a href="#inicio" class="active">Início</a>
-    <a href="#populares">Populares</a>
-    <a href="#explorar">Explorar</a>
-    <a href="#resultados">Pesquisar</a>
-  </nav>
-
-  <div class="header-actions">
-    <button class="header-button" onclick="loadTrending()">
-      ↻ Atualizar jogos
-    </button>
-
-    <button class="header-button mobile-menu" onclick="toggleMenu()">
-      ☰
-    </button>
+<header id="topbar">
+  <div>
+    <div class="logo">SKY<span>FORGE</span></div>
+    <div class="subtitle" id="modeLabel">AIRCRAFT ENGINEERING</div>
   </div>
 
+  <div class="top-actions">
+    <button class="btn" id="saveBtn">💾 Salvar</button>
+    <button class="btn" id="loadBtn">↻ Carregar</button>
+    <button class="btn btn-blue" id="mainBtn">✈ TESTAR VOO</button>
+  </div>
 </header>
 
-<!-- HERO -->
+<div id="viewport"></div>
 
-<main>
+<aside id="leftPanel">
 
-<section class="hero" id="inicio">
-
-  <div class="hero-label">
-    ✦ O UNIVERSO DOS JOGOS DO SCRATCH
+  <div class="section-title">OFICINA DE ENGENHARIA</div>
+  <div class="section-subtitle">
+    Projete sua própria aeronave. Selecione componentes e conecte-os à fuselagem.
   </div>
 
-  <h1>
-    Seu próximo jogo favorito está
-    <span class="gradient-text">aqui.</span>
-  </h1>
+  <div class="tabs">
+    <button class="tab active" data-tab="structure">ESTRUTURA</button>
+    <button class="tab" data-tab="engine">MOTORES</button>
+    <button class="tab" data-tab="landing">POUSO</button>
+  </div>
 
-  <p class="hero-description">
-    Explore projetos incríveis criados por pessoas do mundo inteiro.
-    Pesquise, descubra novos jogos e encontre sua próxima aventura.
+  <div id="partGrid"></div>
+
+  <div class="separator"></div>
+
+  <div class="section-title">AERONAVE ATUAL</div>
+  <div class="section-subtitle">Diagnóstico de engenharia</div>
+
+  <div id="stats"></div>
+
+  <div class="separator"></div>
+
+  <div class="section-title">FERRAMENTAS</div>
+
+  <div class="action-grid">
+    <button class="btn" id="rotateBtn">↻ Girar peça</button>
+    <button class="btn" id="removeBtn">✕ Remover</button>
+    <button class="btn" id="paintBtn">🎨 Pintura</button>
+    <button class="btn" id="cancelBtn">Cancelar</button>
+  </div>
+
+  <div id="statusText">
+    Escolha uma peça para iniciar a construção.
+  </div>
+
+</aside>
+
+<aside id="rightPanel">
+  <h3>CONTROLES DO EDITOR</h3>
+  <p>
+    <b>Mouse / toque:</b> selecionar e instalar.<br>
+    <b>Arrastar:</b> girar a câmera.<br>
+    <b>Scroll:</b> aproximar e afastar.<br>
+    <b>R:</b> girar a peça.<br>
+    <b>Delete:</b> remover peça selecionada.<br>
+    <b>ESC:</b> cancelar seleção.
   </p>
+  <div id="selectedName">Nenhuma peça selecionada</div>
+</aside>
 
-  <div class="search-container">
-
-    <div class="search-box">
-
-      <span class="search-icon">⌕</span>
-
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Pesquise jogos, aventuras, simuladores..."
-        autocomplete="off"
-      >
-
-      <button class="search-button" onclick="searchGames()">
-        Pesquisar
-      </button>
-
-    </div>
-
-    <div class="search-hints">
-      <span>Experimente:</span>
-      <button onclick="quickSearch('platformer')">Platformer</button>
-      <button onclick="quickSearch('horror')">Terror</button>
-      <button onclick="quickSearch('minecraft')">Minecraft</button>
-      <button onclick="quickSearch('obby')">Obby</button>
-    </div>
-
+<div id="flightHUD">
+  <div class="hud-item">
+    <small>VELOCIDADE</small>
+    <strong id="speed">0</strong>
+    <span>KM/H</span>
   </div>
-
-</section>
-
-<!-- CATEGORIES -->
-
-<section class="section" id="explorar">
-
-  <div class="section-heading">
-    <div>
-      <h2>Explore categorias</h2>
-      <p>Encontre jogos de acordo com seu estilo.</p>
-    </div>
+  <div class="hud-item">
+    <small>ALTITUDE</small>
+    <strong id="altitude">0</strong>
+    <span>METROS</span>
   </div>
-
-  <div class="categories">
-
-    <button class="category selected" onclick="selectCategory(this,'')">
-      🌌 Todos
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'platformer')">
-      🏃 Plataforma
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'adventure')">
-      🗺️ Aventura
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'horror')">
-      👻 Terror
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'rpg')">
-      ⚔️ RPG
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'racing')">
-      🏎️ Corrida
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'simulator')">
-      🎮 Simuladores
-    </button>
-
-    <button class="category" onclick="selectCategory(this,'minecraft')">
-      ⛏️ Minecraft
-    </button>
-
+  <div class="hud-item">
+    <small>POTÊNCIA</small>
+    <strong id="power">0</strong>
+    <span>%</span>
   </div>
-
-</section>
-
-<!-- POPULAR GAMES -->
-
-<section class="section" id="populares">
-
-  <div class="section-heading">
-    <div>
-      <h2>🔥 Jogos populares</h2>
-      <p>Projetos que estão chamando a atenção.</p>
-    </div>
-
-    <button class="text-button" onclick="loadTrending()">
-      Atualizar →
-    </button>
+  <div class="hud-item">
+    <small>ESTADO</small>
+    <strong id="status">SOLO</strong>
+    <span>VOO</span>
   </div>
+</div>
 
-  <div class="game-grid" id="popularGames">
-
-    <div class="status-message">
-      <div class="loader"></div>
-      <h3>Preparando o universo...</h3>
-      <p>Buscando jogos do Scratch.</p>
-    </div>
-
+<div id="flightControls">
+  <div class="control-group">
+    <button class="flight-btn" data-key="left">◀</button>
+    <button class="flight-btn" data-key="right">▶</button>
   </div>
-
-</section>
-
-<!-- SEARCH RESULTS -->
-
-<section class="section" id="resultados">
-
-  <div class="section-heading">
-    <div>
-      <h2 id="resultsTitle">Descubra novos jogos</h2>
-      <p id="resultsDescription">
-        Pesquise para encontrar projetos incríveis.
-      </p>
-    </div>
+  <div class="control-group">
+    <button class="flight-btn" data-key="up">▲</button>
+    <button class="flight-btn" data-key="down">▼</button>
   </div>
-
-  <div class="game-grid" id="searchResults">
-
-    <div class="status-message">
-      <h3>🔎 O que vamos jogar hoje?</h3>
-      <p>Digite o nome de um jogo na barra de pesquisa.</p>
-    </div>
-
+  <div class="control-group">
+    <button class="flight-btn" data-key="accelerate">+</button>
+    <button class="flight-btn" data-key="brake">−</button>
   </div>
+</div>
 
-</section>
+<div id="hint">
+  SELECIONE UMA PEÇA · CONSTRUA SUA AERONAVE
+</div>
 
-</main>
-
-<!-- GAME PLAYER -->
-
-<div class="modal" id="gameModal">
-
-  <div class="modal-content">
-
-    <div class="modal-header">
-      <h2 id="modalTitle">Carregando jogo...</h2>
-      <button class="close-modal" onclick="closeGame()">×</button>
-    </div>
-
-    <iframe
-      class="player-frame"
-      id="gameFrame"
-      allowfullscreen
-      allow="autoplay; fullscreen"
-      loading="lazy"
-      referrerpolicy="strict-origin-when-cross-origin"
-      title="Jogo do Scratch"
-    ></iframe>
-
-    <div class="modal-footer">
-      <span id="modalAuthor">Projeto criado na comunidade Scratch</span>
-      <a
-        id="externalLink"
-        class="play-external"
-        href="#"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Abrir no Scratch ↗
-      </a>
-    </div>
-
-  </div>
+<div id="notification"></div>
 
 </div>
 
-<!-- FOOTER -->
+<script type="importmap">
+{
+  "imports":{
+    "three":"https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js"
+  }
+}
+</script>
 
-<footer class="footer">
+<script type="module">
 
-  <div>
-    <strong>✦ SCRATCH UNIVERSE</strong>
-    <p style="margin-top:8px">
-      Um universo de criatividade e diversão.
-    </p>
-  </div>
+import * as THREE from "three";
 
-  <div>
-    <p>Projetos pertencentes aos seus respectivos criadores.</p>
-    <p style="margin-top:7px">
-      Scratch Universe é um projeto independente e não oficial.
-    </p>
-  </div>
+/* =====================================================
+   1. CONFIGURAÇÕES GERAIS
+===================================================== */
 
-</footer>
+const CONFIG = {
+  snapDistance:1.5,
+  gravity:9.81,
+  maxSpeed:105,
+  drag:.002,
+  lift:.085,
+  cameraDistance:14,
+  cameraHeight:7
+};
 
-<script src="script.js" defer></script>
+const PARTS = {
 
+  wingL:{
+    name:"Asa esquerda",
+    icon:"◀",
+    category:"structure",
+    mass:35,
+    cost:500
+  },
+
+  wingR:{
+    name:"Asa direita",
+    icon:"▶",
+    category:"structure",
+    mass:35,
+    cost:500
+  },
+
+  tail:{
+    name:"Estabilizador",
+    icon:"✥",
+    category:"structure",
+    mass:18,
+    cost:350
+  },
+
+  engine:{
+    name:"Motor",
+    icon:"⚙",
+    category:"engine",
+    mass:90,
+    cost:1800
+  },
+
+  propeller:{
+    name:"Hélice",
+    icon:"✳",
+    category:"engine",
+    mass:8,
+    cost:300
+  },
+
+  gearL:{
+    name:"Roda esquerda",
+    icon:"◉",
+    category:"landing",
+    mass:12,
+    cost:200
+  },
+
+  gearR:{
+    name:"Roda direita",
+    icon:"◉",
+    category:"landing",
+    mass:12,
+    cost:200
+  },
+
+  gearN:{
+    name:"Roda dianteira",
+    icon:"◉",
+    category:"landing",
+    mass:10,
+    cost:200
+  }
+
+};
+
+const SOCKETS = {
+
+  wingL:[-2.2,0,0],
+  wingR:[2.2,0,0],
+  tail:[0,0,-2.8],
+  engine:[0,.15,2.15],
+  propeller:[0,.15,3.1],
+  gearL:[-.65,-.55,.5],
+  gearR:[.65,-.55,.5],
+  gearN:[0,-.55,2.3]
+
+};
+
+const state = {
+
+  mode:"build",
+  tab:"structure",
+  selected:null,
+  selectedInstalled:null,
+  placed:{},
+  rotation:0,
+  color:0xe5eaf0,
+
+  throttle:0,
+  speed:0,
+  altitude:0,
+  verticalSpeed:0,
+  onGround:true,
+  crashed:false,
+
+  controls:{}
+
+};
+
+/* =====================================================
+   2. THREE.JS
+===================================================== */
+
+const scene = new THREE.Scene();
+
+scene.background=new THREE.Color(0x9bbdd1);
+scene.fog=new THREE.Fog(0x9bbdd1,100,350);
+
+const camera=new THREE.PerspectiveCamera(
+  55,
+  innerWidth/innerHeight,
+  .1,
+  1500
+);
+
+const renderer=new THREE.WebGLRenderer({
+  antialias:true,
+  powerPreference:"high-performance"
+});
+
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.1;
+
+document.getElementById("viewport").appendChild(renderer.domElement);
+
+/* =====================================================
+   3. ILUMINAÇÃO
+===================================================== */
+
+scene.add(new THREE.HemisphereLight(0xe6f4ff,0x53624d,2));
+
+const sun=new THREE.DirectionalLight(0xffedcf,3.2);
+
+sun.position.set(-35,65,-30);
+sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-100;
+sun.shadow.camera.right=100;
+sun.shadow.camera.top=100;
+sun.shadow.camera.bottom=-100;
+
+scene.add(sun);
+
+/* =====================================================
+   4. MATERIAIS
+===================================================== */
+
+function mat(color,roughness=.5,metalness=.25){
+
+  return new THREE.MeshStandardMaterial({
+    color,
+    roughness,
+    metalness
+  });
+
+}
+
+const M={
+
+  body:mat(state.color,.34,.55),
+  blue:mat(0x137db6,.35,.55),
+  wing:mat(0xdce4eb,.45,.4),
+  dark:mat(0x202a35,.4,.6),
+  metal:mat(0x91a4b1,.25,.85),
+  rubber:mat(0x111416,.9,0),
+  yellow:mat(0xffbd52,.5,.1),
+
+  glass:new THREE.MeshPhysicalMaterial({
+    color:0x54c5ed,
+    transparent:true,
+    opacity:.68,
+    roughness:.12,
+    metalness:.2,
+    clearcoat:1
+  })
+
+};
+
+/* =====================================================
+   5. GRUPOS DO MUNDO
+===================================================== */
+
+const world=new THREE.Group();
+const hangar=new THREE.Group();
+const aircraft=new THREE.Group();
+const previewGroup=new THREE.Group();
+
+scene.add(world,hangar,aircraft,previewGroup);
+
+const fuselage=new THREE.Group();
+aircraft.add(fuselage);
+
+aircraft.position.set(0,1,0);
+
+/* =====================================================
+   6. TERRENO E AEROPORTO
+===================================================== */
+
+const ground=new THREE.Mesh(
+  new THREE.PlaneGeometry(1000,1000),
+  mat(0x71866a,1,0)
+);
+
+ground.rotation.x=-Math.PI/2;
+ground.position.y=-.15;
+ground.receiveShadow=true;
+world.add(ground);
+
+const runway=new THREE.Group();
+
+const asphalt=new THREE.Mesh(
+  new THREE.BoxGeometry(19,.18,230),
+  mat(0x303941,.95,.05)
+);
+
+asphalt.position.set(0,-.03,0);
+asphalt.receiveShadow=true;
+runway.add(asphalt);
+
+const lineMaterial=mat(0xf0f0e9);
+
+for(let z=-105;z<=105;z+=13){
+
+  const line=new THREE.Mesh(
+    new THREE.BoxGeometry(.35,.03,6),
+    lineMaterial
+  );
+
+  line.position.set(0,.08,z);
+  runway.add(line);
+
+}
+
+for(const x of [-9,9]){
+
+  const edge=new THREE.Mesh(
+    new THREE.BoxGeometry(.22,.03,230),
+    lineMaterial
+  );
+
+  edge.position.set(x,.08,0);
+  runway.add(edge);
+
+}
+
+world.add(runway);
+
+/* =====================================================
+   7. HANGAR 3D
+===================================================== */
+
+const floor=new THREE.Mesh(
+  new THREE.BoxGeometry(43,.3,38),
+  mat(0x7a8790,.85,.2)
+);
+
+floor.position.set(0,-.1,-8);
+floor.receiveShadow=true;
+hangar.add(floor);
+
+function wall(x,y,z,w,h,d,color){
+
+  const object=new THREE.Mesh(
+    new THREE.BoxGeometry(w,h,d),
+    mat(color,.75,.3)
+  );
+
+  object.position.set(x,y,z);
+  object.castShadow=true;
+  object.receiveShadow=true;
+  hangar.add(object);
+
+}
+
+wall(-21,7,-8,1,14,38,0x44576a);
+wall(21,7,-8,1,14,38,0x44576a);
+wall(0,14,-27,43,1,1,0x34485b);
+
+for(let x=-18;x<=18;x+=6){
+
+  const beam=new THREE.Mesh(
+    new THREE.BoxGeometry(.3,14,.3),
+    M.metal
+  );
+
+  beam.position.set(x,7,-8);
+  hangar.add(beam);
+
+}
+
+for(let x=-15;x<=15;x+=5){
+
+  const lamp=new THREE.Mesh(
+    new THREE.BoxGeometry(3,.15,.5),
+    mat(0xe3f4ff,.2,.1)
+  );
+
+  lamp.position.set(x,13,-8);
+  hangar.add(lamp);
+
+}
+
+/* =====================================================
+   8. MONTANHAS
+===================================================== */
+
+for(let i=0;i<35;i++){
+
+  const mountain=new THREE.Mesh(
+    new THREE.ConeGeometry(
+      12+Math.random()*18,
+      25+Math.random()*40,
+      7
+    ),
+    mat(0x667f75,1,0)
+  );
+
+  const a=i/35*Math.PI*2;
+  const d=160+Math.random()*100;
+
+  mountain.position.set(
+    Math.cos(a)*d,
+    8,
+    Math.sin(a)*d
+  );
+
+  world.add(mountain);
+
+}
+
+/* =====================================================
+   9. FUSELAGEM
+===================================================== */
+
+function makeFuselage(){
+
+  const body=new THREE.Mesh(
+    new THREE.CylinderGeometry(.45,.55,5.9,24),
+    M.body
+  );
+
+  body.rotation.x=Math.PI/2;
+  body.castShadow=true;
+  fuselage.add(body);
+
+  const nose=new THREE.Mesh(
+    new THREE.SphereGeometry(.47,24,16),
+    M.blue
+  );
+
+  nose.position.z=2.85;
+  nose.scale.set(1,1,.8);
+  fuselage.add(nose);
+
+  const cockpit=new THREE.Mesh(
+    new THREE.SphereGeometry(.44,24,16),
+    M.glass
+  );
+
+  cockpit.position.set(0,.38,.55);
+  cockpit.scale.set(.9,.65,1.3);
+  fuselage.add(cockpit);
+
+  const rear=new THREE.Mesh(
+    new THREE.CylinderGeometry(.47,.47,.15,20),
+    M.blue
+  );
+
+  rear.rotation.x=Math.PI/2;
+  rear.position.z=-1.8;
+  fuselage.add(rear);
+
+  const stripe=new THREE.Mesh(
+    new THREE.BoxGeometry(.035,.035,4.6),
+    M.yellow
+  );
+
+  stripe.position.set(0,.45,0);
+  fuselage.add(stripe);
+
+}
+
+makeFuselage();
+
+/* =====================================================
+   10. COMPONENTES MODULARES
+===================================================== */
+
+function makeWing(side){
+
+  const group=new THREE.Group();
+
+  const wing=new THREE.Mesh(
+    new THREE.BoxGeometry(4.6,.17,1.35),
+    M.wing
+  );
+
+  wing.castShadow=true;
+  group.add(wing);
+
+  const tip=new THREE.Mesh(
+    new THREE.BoxGeometry(.32,.18,1.15),
+    M.blue
+  );
+
+  tip.position.x=side*2.25;
+  group.add(tip);
+
+  const flap=new THREE.Mesh(
+    new THREE.BoxGeometry(1.3,.07,.23),
+    M.dark
+  );
+
+  flap.position.set(side*1.35,-.12,-.43);
+  group.add(flap);
+
+  return group;
+
+}
+
+function makeTail(){
+
+  const group=new THREE.Group();
+
+  const horizontal=new THREE.Mesh(
+    new THREE.BoxGeometry(2.5,.15,.9),
+    M.blue
+  );
+
+  group.add(horizontal);
+
+  const vertical=new THREE.Mesh(
+    new THREE.BoxGeometry(.16,1.35,.9),
+    M.body
+  );
+
+  vertical.position.y=.68;
+  group.add(vertical);
+
+  return group;
+
+}
+
+function makeEngine(){
+
+  const group=new THREE.Group();
+
+  const engine=new THREE.Mesh(
+    new THREE.CylinderGeometry(.34,.39,.9,24),
+    M.dark
+  );
+
+  engine.rotation.x=Math.PI/2;
+  group.add(engine);
+
+  const ring=new THREE.Mesh(
+    new THREE.TorusGeometry(.35,.06,12,24),
+    M.metal
+  );
+
+  ring.position.z=.4;
+  group.add(ring);
+
+  return group;
+
+}
+
+function makePropeller(){
+
+  const group=new THREE.Group();
+
+  const hub=new THREE.Mesh(
+    new THREE.SphereGeometry(.19,16,12),
+    M.metal
+  );
+
+  group.add(hub);
+
+  for(let i=0;i<2;i++){
+
+    const blade=new THREE.Mesh(
+      new THREE.BoxGeometry(.18,1.8,.13),
+      M.dark
+    );
+
+    blade.position.y=i===0?.85:-.85;
+    group.add(blade);
+
+  }
+
+  return group;
+
+}
+
+function makeGear(){
+
+  const group=new THREE.Group();
+
+  const support=new THREE.Mesh(
+    new THREE.CylinderGeometry(.07,.09,.8,12),
+    M.metal
+  );
+
+  support.position.y=-.3;
+  group.add(support);
+
+  const wheel=new THREE.Mesh(
+    new THREE.TorusGeometry(.27,.11,12,24),
+    M.rubber
+  );
+
+  wheel.rotation.y=Math.PI/2;
+  wheel.position.y=-.7;
+  group.add(wheel);
+
+  return group;
+
+}
+
+function createPart(id){
+
+  let object;
+
+  switch(id){
+
+    case "wingL": object=makeWing(-1);break;
+    case "wingR": object=makeWing(1);break;
+    case "tail": object=makeTail();break;
+    case "engine": object=makeEngine();break;
+    case "propeller": object=makePropeller();break;
+    default: object=makeGear();
+
+  }
+
+  object.name=id;
+  object.userData.partId=id;
+
+  return object;
+
+}
+
+/* =====================================================
+   11. INTERFACE DE COMPONENTES
+===================================================== */
+
+const grid=document.getElementById("partGrid");
+
+function renderParts(){
+
+  grid.innerHTML="";
+
+  Object.entries(PARTS).forEach(([id,p])=>{
+
+    if(p.category!==state.tab)return;
+
+    const button=document.createElement("button");
+
+    button.className="part-card";
+    button.classList.toggle("active",state.selected===id);
+
+    button.innerHTML=`
+      <div class="part-icon">${p.icon}</div>
+      <strong>${p.name}</strong>
+      <small>${state.placed[id]?"INSTALADA":"$ "+p.cost}</small>
+    `;
+
+    button.onclick=()=>selectPart(id);
+
+    grid.appendChild(button);
+
+  });
+
+}
+
+document.querySelectorAll(".tab").forEach(tab=>{
+
+  tab.addEventListener("click",()=>{
+
+    state.tab=tab.dataset.tab;
+
+    document.querySelectorAll(".tab").forEach(t=>
+      t.classList.toggle("active",t===tab)
+    );
+
+    renderParts();
+
+  });
+
+});
+
+/* =====================================================
+   12. SELEÇÃO E ENCAIXE
+===================================================== */
+
+let preview=null;
+
+function selectPart(id){
+
+  if(state.mode!=="build")return;
+
+  if(state.placed[id]){
+
+    notify("Esta peça já está instalada.");
+    return;
+
+  }
+
+  state.selected=id;
+  state.selectedInstalled=null;
+  state.rotation=0;
+
+  if(preview)previewGroup.remove(preview);
+
+  preview=createPart(id);
+
+  preview.traverse(obj=>{
+
+    if(obj.isMesh){
+
+      obj.material=obj.material.clone();
+      obj.material.transparent=true;
+      obj.material.opacity=.45;
+      obj.material.depthWrite=false;
+
+    }
+
+  });
+
+  preview.position.set(...SOCKETS[id]);
+
+  previewGroup.add(preview);
+
+  document.getElementById("selectedName").textContent=
+    "Peça: "+PARTS[id].name;
+
+  document.getElementById("statusText").textContent=
+    "Peça selecionada. Clique na área de construção para conectar.";
+
+  renderParts();
+
+}
+
+function cancelSelection(){
+
+  state.selected=null;
+
+  if(preview){
+
+    previewGroup.remove(preview);
+    preview=null;
+
+  }
+
+  renderParts();
+
+  document.getElementById("selectedName").textContent=
+    "Nenhuma peça selecionada";
+
+}
+
+function installPart(){
+
+  if(!state.selected)return;
+
+  const id=state.selected;
+
+  if(state.placed[id])return;
+
+  const object=createPart(id);
+
+  object.position.set(...SOCKETS[id]);
+  object.rotation.y=state.rotation;
+
+  aircraft.add(object);
+
+  state.placed[id]=true;
+
+  cancelSelection();
+  updateStats();
+
+  notify(PARTS[id].name+" conectada à aeronave!");
+
+}
+
+function removePart(){
+
+  if(!state.selectedInstalled){
+
+    notify("Selecione uma peça instalada primeiro.");
+    return;
+
+  }
+
+  const id=state.selectedInstalled;
+
+  const object=aircraft.getObjectByName(id);
+
+  if(object){
+
+    aircraft.remove(object);
+
+    state.placed[id]=false;
+
+  }
+
+  state.selectedInstalled=null;
+
+  updateStats();
+  renderParts();
+
+  notify("Componente removido.");
+
+}
+
+/* =====================================================
+   13. CÂMERA E CLIQUES
+===================================================== */
+
+let angle=.7;
+let height=7;
+let distance=14;
+
+let dragging=false;
+let pointerX=0;
+let pointerY=0;
+let dragMoved=false;
+
+const raycaster=new THREE.Raycaster();
+const pointer=new THREE.Vector2();
+
+function updateCamera(){
+
+  camera.position.set(
+    Math.sin(angle)*distance,
+    height,
+    -Math.cos(angle)*distance
+  );
+
+  camera.lookAt(0,1,0);
+
+}
+
+updateCamera();
+
+function getPointer(event){
+
+  const rect=renderer.domElement.getBoundingClientRect();
+
+  pointer.x=((event.clientX-rect.left)/rect.width)*2-1;
+  pointer.y=-((event.clientY-rect.top)/rect.height)*2+1;
+
+}
+
+function pickInstalledPart(event){
+
+  getPointer(event);
+
+  raycaster.setFromCamera(pointer,camera);
+
+  const meshes=[];
+
+  aircraft.children.forEach(child=>{
+
+    if(child===fuselage)return;
+
+    child.traverse(obj=>{
+
+      if(obj.isMesh)meshes.push(obj);
+
+    });
+
+  });
+
+  const hits=raycaster.intersectObjects(meshes,false);
+
+  if(hits.length){
+
+    let object=hits[0].object;
+
+    while(object.parent!==aircraft&&object.parent){
+      object=object.parent;
+    }
+
+    const id=object.userData.partId;
+
+    if(id){
+
+      state.selectedInstalled=id;
+      state.selected=null;
+
+      document.getElementById("selectedName").textContent=
+        "Selecionada: "+PARTS[id].name;
+
+      notify("Peça selecionada. Use Remover para desinstalar.");
+
+      return true;
+
+    }
+
+  }
+
+  return false;
+
+}
+
+renderer.domElement.addEventListener("pointerdown",event=>{
+
+  if(state.mode!=="build")return;
+
+  dragging=true;
+  dragMoved=false;
+
+  pointerX=event.clientX;
+  pointerY=event.clientY;
+
+});
+
+renderer.domElement.addEventListener("pointermove",event=>{
+
+  if(!dragging||state.mode!=="build")return;
+
+  const dx=event.clientX-pointerX;
+  const dy=event.clientY-pointerY;
+
+  if(Math.abs(dx)+Math.abs(dy)>3)dragMoved=true;
+
+  angle-=dx*.006;
+
+  height=THREE.MathUtils.clamp(
+    height+dy*.025,
+    2,
+    17
+  );
+
+  pointerX=event.clientX;
+  pointerY=event.clientY;
+
+  updateCamera();
+
+});
+
+renderer.domElement.addEventListener("pointerup",event=>{
+
+  if(!dragging)return;
+
+  dragging=false;
+
+  if(dragMoved)return;
+
+  if(state.mode==="build"){
+
+    if(state.selected){
+
+      installPart();
+
+    }else{
+
+      pickInstalledPart(event);
+
+    }
+
+  }
+
+});
+
+renderer.domElement.addEventListener("pointercancel",()=>{
+  dragging=false;
+});
+
+renderer.domElement.addEventListener("wheel",event=>{
+
+  if(state.mode!=="build")return;
+
+  distance=THREE.MathUtils.clamp(
+    distance+event.deltaY*.01,
+    6,
+    25
+  );
+
+  updateCamera();
+
+},{passive:true});
+
+/* =====================================================
+   14. FERRAMENTAS DO EDITOR
+===================================================== */
+
+document.getElementById("rotateBtn").onclick=()=>{
+
+  if(!state.selected)return notify("Selecione uma peça primeiro.");
+
+  state.rotation+=Math.PI/2;
+
+  if(preview)preview.rotation.y=state.rotation;
+
+};
+
+document.getElementById("removeBtn").onclick=removePart;
+
+document.getElementById("cancelBtn").onclick=cancelSelection;
+
+document.getElementById("paintBtn").onclick=()=>{
+
+  const colors=[
+    0xe5eaf0,
+    0x1979b7,
+    0xd84b4b,
+    0x35a77d,
+    0xf0bd43,
+    0x292e3b
+  ];
+
+  const index=colors.indexOf(state.color);
+
+  state.color=colors[(index+1)%colors.length];
+
+  M.body.color.setHex(state.color);
+
+  notify("Pintura da fuselagem atualizada.");
+
+};
+
+window.addEventListener("keydown",event=>{
+
+  const key=event.key.toLowerCase();
+
+  if(key==="r"&&state.selected){
+
+    state.rotation+=Math.PI/2;
+
+    if(preview)preview.rotation.y=state.rotation;
+
+  }
+
+  if(key==="escape")cancelSelection();
+
+  if(key==="delete"||key==="backspace")removePart();
+
+});
+
+/* =====================================================
+   15. ESTATÍSTICAS
+===================================================== */
+
+function getStats(){
+
+  let mass=650;
+  let wings=0;
+
+  Object.keys(state.placed).forEach(id=>{
+
+    if(state.placed[id]){
+
+      mass+=PARTS[id].mass;
+
+      if(id==="wingL"||id==="wingR")wings++;
+
+    }
+
+  });
+
+  const engine=!!state.placed.engine;
+  const propeller=!!state.placed.propeller;
+
+  const complete=
+    !!state.placed.wingL&&
+    !!state.placed.wingR&&
+    !!state.placed.tail&&
+    engine&&
+    propeller&&
+    !!state.placed.gearL&&
+    !!state.placed.gearR&&
+    !!state.placed.gearN;
+
+  return{
+    mass,
+    wings,
+    power:engine&&propeller?100:0,
+    lift:wings*50,
+    complete
+  };
+
+}
+
+function updateStats(){
+
+  const s=getStats();
+
+  const count=Object.values(state.placed).filter(Boolean).length;
+
+  document.getElementById("stats").innerHTML=`
+
+    <div class="stat">
+      <span>Componentes instalados</span>
+      <strong>${count}</strong>
+    </div>
+
+    <div class="stat">
+      <span>Peso estimado</span>
+      <strong>${s.mass} kg</strong>
+    </div>
+
+    <div class="stat">
+      <span>Asas</span>
+      <strong>${s.wings}/2</strong>
+    </div>
+
+    <div class="stat">
+      <span>Potência disponível</span>
+      <strong>${s.power}%</strong>
+    </div>
+
+    <div class="stat">
+      <span>Sustentação estrutural</span>
+      <strong>${s.lift}%</strong>
+    </div>
+
+    <div class="stat">
+      <span>Condição de voo</span>
+      <strong style="color:${s.complete?"#54d6a0":"#ffbd59"}">
+        ${s.complete?"COMPLETA":"INCOMPLETA"}
+      </strong>
+    </div>
+
+  `;
+
+}
+
+/* =====================================================
+   16. SALVAR E CARREGAR PROJETO
+===================================================== */
+
+function saveProject(){
+
+  const data={
+    placed:state.placed,
+    color:state.color
+  };
+
+  try{
+
+    localStorage.setItem(
+      "skyforge_aircraft",
+      JSON.stringify(data)
+    );
+
+    notify("Aeronave salva neste navegador!");
+
+  }catch(error){
+
+    notify("Não foi possível salvar o projeto.");
+
+  }
+
+}
+
+function loadProject(){
+
+  try{
+
+    const raw=localStorage.getItem("skyforge_aircraft");
+
+    if(!raw)return notify("Nenhum projeto salvo encontrado.");
+
+    const data=JSON.parse(raw);
+
+    for(const child of [...aircraft.children]){
+
+      if(child!==fuselage)aircraft.remove(child);
+
+    }
+
+    state.placed={};
+
+    Object.keys(data.placed||{}).forEach(id=>{
+
+      if(!PARTS[id]||!data.placed[id])return;
+
+      const object=createPart(id);
+
+      object.position.set(...SOCKETS[id]);
+
+      aircraft.add(object);
+      state.placed[id]=true;
+
+    });
+
+    state.color=data.color||0xe5eaf0;
+
+    M.body.color.setHex(state.color);
+
+    cancelSelection();
+    updateStats();
+    renderParts();
+
+    notify("Projeto carregado!");
+
+  }catch(error){
+
+    notify("Erro ao carregar o projeto.");
+
+  }
+
+}
+
+document.getElementById("saveBtn").onclick=saveProject;
+document.getElementById("loadBtn").onclick=loadProject;
+
+/* =====================================================
+   17. FÍSICA DE VOO
+===================================================== */
+
+const velocity=new THREE.Vector3();
+
+const flightTarget=new THREE.Vector3();
+
+let propeller=null;
+
+function validateAircraft(){
+
+  const s=getStats();
+
+  if(!s.complete){
+
+    notify("Instale as duas asas, cauda, motor, hélice e três rodas.");
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+function startFlight(){
+
+  if(state.mode==="flight")return;
+
+  if(!validateAircraft())return;
+
+  state.mode="flight";
+
+  state.speed=0;
+  state.altitude=0;
+  state.verticalSpeed=0;
+  state.throttle=.3;
+  state.onGround=true;
+  state.crashed=false;
+
+  velocity.set(0,0,0);
+
+  aircraft.position.set(0,1,0);
+  aircraft.rotation.set(0,0,0);
+
+  hangar.visible=false;
+  world.visible=true;
+
+  propeller=aircraft.getObjectByName("propeller");
+
+  document.body.classList.add("flying");
+
+  document.getElementById("modeLabel").textContent="FLIGHT SIMULATOR";
+
+  document.getElementById("mainBtn").textContent="↩ VOLTAR AO HANGAR";
+
+  notify("Aeronave pronta! Acelere para iniciar a decolagem.");
+
+}
+
+function returnHangar(){
+
+  state.mode="build";
+
+  velocity.set(0,0,0);
+
+  aircraft.position.set(0,1,0);
+  aircraft.rotation.set(0,0,0);
+
+  hangar.visible=true;
+
+  distance=14;
+  height=7;
+  angle=.7;
+
+  updateCamera();
+
+  document.body.classList.remove("flying");
+
+  document.getElementById("modeLabel").textContent="AIRCRAFT ENGINEERING";
+
+  document.getElementById("mainBtn").textContent="✈ TESTAR VOO";
+
+  state.controls={};
+
+  notify("Você voltou ao hangar.");
+
+}
+
+document.getElementById("mainBtn").onclick=()=>{
+
+  if(state.mode==="build")startFlight();
+  else returnHangar();
+
+};
+
+/* =====================================================
+   18. CONTROLES DE VOO
+===================================================== */
+
+const keys={};
+
+window.addEventListener("keydown",event=>{
+
+  keys[event.key.toLowerCase()]=true;
+
+});
+
+window.addEventListener("keyup",event=>{
+
+  keys[event.key.toLowerCase()]=false;
+
+});
+
+document.querySelectorAll(".flight-btn").forEach(button=>{
+
+  const key=button.dataset.key;
+
+  const down=e=>{
+
+    e.preventDefault();
+    state.controls[key]=true;
+
+  };
+
+  const up=()=>state.controls[key]=false;
+
+  button.addEventListener("pointerdown",down);
+  button.addEventListener("pointerup",up);
+  button.addEventListener("pointerleave",up);
+  button.addEventListener("pointercancel",up);
+
+});
+
+/* =====================================================
+   19. MOTOR E DINÂMICA
+===================================================== */
+
+function updateFlight(dt){
+
+  if(state.mode!=="flight"||state.crashed)return;
+
+  const s=getStats();
+
+  const accelerate=
+    keys["shift"]||
+    state.controls.accelerate;
+
+  const brake=
+    keys["control"]||
+    state.controls.brake;
+
+  if(accelerate)state.throttle=Math.min(1,state.throttle+dt*.4);
+  if(brake)state.throttle=Math.max(0,state.throttle-dt*.4);
+
+  const pitchUp=
+    keys["w"]||keys["arrowup"]||state.controls.up;
+
+  const pitchDown=
+    keys["s"]||keys["arrowdown"]||state.controls.down;
+
+  const left=
+    keys["a"]||keys["arrowleft"]||state.controls.left;
+
+  const right=
+    keys["d"]||keys["arrowright"]||state.controls.right;
+
+  /* Controle de atitude */
+
+  aircraft.rotateX(
+    ((pitchDown?1:0)-(pitchUp?1:0))*dt*.7
+  );
+
+  aircraft.rotateZ(
+    ((right?1:0)-(left?1:0))*dt*.8
+  );
+
+  const forward=new THREE.Vector3(0,0,1)
+    .applyQuaternion(aircraft.quaternion);
+
+  const up=new THREE.Vector3(0,1,0)
+    .applyQuaternion(aircraft.quaternion);
+
+  const speed=velocity.length();
+
+  /* Propulsão */
+
+  const thrust=state.throttle*25;
+
+  const acceleration=forward.clone().multiplyScalar(
+    thrust/s.mass*650
+  );
+
+  /* Arrasto */
+
+  const drag=velocity.clone().multiplyScalar(
+    -.0025*speed
+  );
+
+  /* Sustentação simplificada */
+
+  const wingEfficiency=s.wings/2;
+
+  const liftAmount=
+    CONFIG.lift*
+    speed*
+    speed*
+    wingEfficiency*
+    Math.max(0,up.y);
+
+  const lift=up.clone().multiplyScalar(
+    liftAmount/s.mass*650
+  );
+
+  const gravity=new THREE.Vector3(0,-CONFIG.gravity,0);
+
+  const total=new THREE.Vector3()
+    .add(acceleration)
+    .add(drag)
+    .add(lift)
+    .add(gravity);
+
+  velocity.addScaledVector(total,dt);
+
+  if(velocity.length()>CONFIG.maxSpeed){
+
+    velocity.setLength(CONFIG.maxSpeed);
+
+  }
+
+  aircraft.position.addScaledVector(velocity,dt);
+
+  /* Contato com o solo */
+
+  if(aircraft.position.y<1){
+
+    aircraft.position.y=1;
+
+    if(velocity.y<0)velocity.y=0;
+
+    state.onGround=true;
+
+  }else{
+
+    state.onGround=false;
+
+  }
+
+  state.speed=velocity.length()*3.6;
+  state.altitude=Math.max(0,aircraft.position.y-1);
+  state.verticalSpeed=velocity.y;
+
+  if(propeller){
+
+    propeller.rotation.z+=dt*(10+state.throttle*70);
+
+  }
+
+  updateFlightCamera(dt);
+  updateHUD();
+
+}
+
+/* =====================================================
+   20. CÂMERA DO AVIÃO
+===================================================== */
+
+function updateFlightCamera(dt){
+
+  const offset=new THREE.Vector3(0,4.5,-12)
+    .applyQuaternion(aircraft.quaternion);
+
+  const desired=aircraft.position.clone().add(offset);
+
+  camera.position.lerp(
+    desired,
+    1-Math.pow(.001,dt)
+  );
+
+  const target=aircraft.position.clone().add(
+    new THREE.Vector3(0,1,5)
+      .applyQuaternion(aircraft.quaternion)
+  );
+
+  flightTarget.lerp(
+    target,
+    1-Math.pow(.001,dt)
+  );
+
+  camera.lookAt(flightTarget);
+
+}
+
+/* =====================================================
+   21. PAINEL DE VOO
+===================================================== */
+
+function updateHUD(){
+
+  document.getElementById("speed").textContent=
+    Math.round(state.speed);
+
+  document.getElementById("altitude").textContent=
+    Math.round(state.altitude);
+
+  document.getElementById("power").textContent=
+    Math.round(state.throttle*100);
+
+  document.getElementById("status").textContent=
+    state.onGround?"SOLO":"VOANDO";
+
+}
+
+/* =====================================================
+   22. NOTIFICAÇÕES
+===================================================== */
+
+let notificationTimer;
+
+function notify(message){
+
+  const element=document.getElementById("notification");
+
+  element.textContent=message;
+  element.classList.add("visible");
+
+  clearTimeout(notificationTimer);
+
+  notificationTimer=setTimeout(()=>{
+
+    element.classList.remove("visible");
+
+  },2500);
+
+}
+
+/* =====================================================
+   23. REDIMENSIONAMENTO
+===================================================== */
+
+window.addEventListener("resize",()=>{
+
+  camera.aspect=innerWidth/innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(innerWidth,innerHeight);
+
+});
+
+/* =====================================================
+   24. LOOP PRINCIPAL
+===================================================== */
+
+const clock=new THREE.Clock();
+
+function animate(){
+
+  requestAnimationFrame(animate);
+
+  const dt=Math.min(clock.getDelta(),.035);
+
+  if(state.mode==="build"){
+
+    updateCamera();
+
+  }else{
+
+    updateFlight(dt);
+
+  }
+
+  renderer.render(scene,camera);
+
+}
+
+/* =====================================================
+   25. INICIALIZAÇÃO
+===================================================== */
+
+function initialize(){
+
+  state.placed={};
+
+  renderParts();
+  updateStats();
+  updateCamera();
+
+  animate();
+
+  document.getElementById("loading").style.display="none";
+
+  notify("SKYFORGE 2.0 carregado! Comece a construir.");
+
+}
+
+initialize();
+
+</script>
 </body>
 </html>
