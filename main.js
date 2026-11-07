@@ -1,23 +1,34 @@
 
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
 
-// ==========================================
-// SKYFORGE FLIGHT — PRIMEIRA VERSÃO
-// ==========================================
+// ======================================================
+// SKYFORGE FLIGHT — CORE ENGINE
+// ======================================================
 
-const sceneElement = document.getElementById("flightScene");
-const loadingScreen = document.getElementById("loadingScreen");
-const startScreen = document.getElementById("startScreen");
+const $ = (id) => document.getElementById(id);
+
+const flightScene = $("flightScene");
+const loading = $("loading");
+const startScreen = $("startScreen");
+const flightMenu = $("flightMenu");
+
+if (!flightScene) {
+  throw new Error("Elemento flightScene não encontrado no HTML.");
+}
+
+// ======================================================
+// CONFIGURAÇÃO DA CENA
+// ======================================================
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x87b9df);
-scene.fog = new THREE.Fog(0x87b9df, 300, 1800);
+scene.background = new THREE.Color(0x91c5e8);
+scene.fog = new THREE.Fog(0x91c5e8, 500, 2600);
 
 const camera = new THREE.PerspectiveCamera(
   65,
-  window.innerWidth / window.innerHeight,
+  flightScene.clientWidth / flightScene.clientHeight,
   0.1,
-  5000
+  6000
 );
 
 const renderer = new THREE.WebGLRenderer({
@@ -26,142 +37,156 @@ const renderer = new THREE.WebGLRenderer({
 });
 
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(flightScene.clientWidth, flightScene.clientHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.15;
+renderer.toneMappingExposure = 1.2;
 
-sceneElement.appendChild(renderer.domElement);
+renderer.domElement.style.position = "absolute";
+renderer.domElement.style.inset = "0";
+renderer.domElement.style.width = "100%";
+renderer.domElement.style.height = "100%";
 
-// ==========================================
+flightScene.appendChild(renderer.domElement);
+
+// ======================================================
 // ILUMINAÇÃO
-// ==========================================
+// ======================================================
 
-const hemisphere = new THREE.HemisphereLight(
-  0xc9e7ff,
-  0x526044,
-  2
-);
-scene.add(hemisphere);
+scene.add(new THREE.HemisphereLight(0xd8efff, 0x536044, 2.2));
 
-const sunlight = new THREE.DirectionalLight(0xffe3b5, 3);
-sunlight.position.set(-300, 500, 200);
-sunlight.castShadow = true;
-sunlight.shadow.mapSize.set(2048, 2048);
-sunlight.shadow.camera.left = -400;
-sunlight.shadow.camera.right = 400;
-sunlight.shadow.camera.top = 400;
-sunlight.shadow.camera.bottom = -400;
-scene.add(sunlight);
+const sun = new THREE.DirectionalLight(0xffe5bd, 3.2);
+sun.position.set(-300, 500, 200);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -350;
+sun.shadow.camera.right = 350;
+sun.shadow.camera.top = 350;
+sun.shadow.camera.bottom = -350;
+scene.add(sun);
 
-// ==========================================
+// ======================================================
 // MATERIAIS
-// ==========================================
+// ======================================================
 
-const materials = {
+const mat = {
   grass: new THREE.MeshStandardMaterial({ color: 0x527b43 }),
   asphalt: new THREE.MeshStandardMaterial({ color: 0x303943, roughness: 0.95 }),
-  concrete: new THREE.MeshStandardMaterial({ color: 0x9b9c98 }),
-  white: new THREE.MeshStandardMaterial({ color: 0xe8edf0, metalness: 0.25, roughness: 0.35 }),
-  dark: new THREE.MeshStandardMaterial({ color: 0x18232e, metalness: 0.4, roughness: 0.4 }),
-  blue: new THREE.MeshStandardMaterial({ color: 0x173f70, metalness: 0.35, roughness: 0.3 }),
+  concrete: new THREE.MeshStandardMaterial({ color: 0x999d9d }),
+  white: new THREE.MeshStandardMaterial({ color: 0xe8edf0, metalness: 0.2, roughness: 0.38 }),
+  dark: new THREE.MeshStandardMaterial({ color: 0x17232e, metalness: 0.45 }),
+  blue: new THREE.MeshStandardMaterial({ color: 0x174c7c, metalness: 0.3 }),
   glass: new THREE.MeshPhysicalMaterial({
-    color: 0x173d55,
-    metalness: 0.45,
+    color: 0x17435b,
+    metalness: 0.35,
     roughness: 0.12,
     transparent: true,
     opacity: 0.85
   }),
-  rubber: new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.9 }),
-  yellow: new THREE.MeshStandardMaterial({ color: 0xffd34e, emissive: 0x332000 })
+  rubber: new THREE.MeshStandardMaterial({ color: 0x111111 }),
+  yellow: new THREE.MeshBasicMaterial({ color: 0xffd34e })
 };
 
-// ==========================================
-// FUNÇÕES DE CONSTRUÇÃO
-// ==========================================
+// ======================================================
+// FUNÇÕES AUXILIARES
+// ======================================================
 
-function box(parent, width, height, depth, material, x, y, z) {
+function createBox(parent, w, h, d, material, x, y, z) {
   const mesh = new THREE.Mesh(
-    new THREE.BoxGeometry(width, height, depth),
+    new THREE.BoxGeometry(w, h, d),
     material
   );
+
   mesh.position.set(x, y, z);
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   parent.add(mesh);
+
   return mesh;
 }
 
-function cylinder(parent, radiusTop, radiusBottom, length, material, x, y, z, rotationZ = 0) {
+function createCylinder(parent, radius, length, material, x, y, z) {
   const mesh = new THREE.Mesh(
-    new THREE.CylinderGeometry(radiusTop, radiusBottom, length, 24),
+    new THREE.CylinderGeometry(radius, radius, length, 24),
     material
   );
+
+  mesh.rotation.x = Math.PI / 2;
   mesh.position.set(x, y, z);
-  mesh.rotation.z = rotationZ;
   mesh.castShadow = true;
   parent.add(mesh);
+
   return mesh;
 }
 
-// ==========================================
-// TERRENO E AEROPORTO
-// ==========================================
+// ======================================================
+// TERRENO
+// ======================================================
 
-const ground = new THREE.Mesh(
+const terrain = new THREE.Mesh(
   new THREE.PlaneGeometry(4000, 4000),
-  materials.grass
+  mat.grass
 );
-ground.rotation.x = -Math.PI / 2;
-ground.position.y = -2;
-ground.receiveShadow = true;
-scene.add(ground);
+
+terrain.rotation.x = -Math.PI / 2;
+terrain.position.y = -2;
+terrain.receiveShadow = true;
+scene.add(terrain);
+
+// ======================================================
+// PISTA
+// ======================================================
 
 const runway = new THREE.Mesh(
-  new THREE.BoxGeometry(100, 0.5, 1500),
-  materials.asphalt
+  new THREE.BoxGeometry(110, 0.5, 1600),
+  mat.asphalt
 );
+
 runway.position.set(0, -1.5, 0);
 runway.receiveShadow = true;
 scene.add(runway);
 
-// Linhas centrais da pista
-for (let z = -700; z <= 700; z += 80) {
-  box(scene, 2, 0.15, 35, materials.white, 0, -1.15, z);
+// Faixas centrais
+for (let z = -740; z <= 740; z += 80) {
+  createBox(scene, 2, 0.15, 35, mat.white, 0, -1.15, z);
 }
 
-// Laterais da pista
-for (const side of [-47, 47]) {
-  box(scene, 1.5, 0.15, 1500, materials.white, side, -1.15, 0);
+// Laterais
+for (const x of [-52, 52]) {
+  createBox(scene, 1.5, 0.15, 1600, mat.white, x, -1.15, 0);
 }
 
-// Pátio do aeroporto
+// Pátio
 const apron = new THREE.Mesh(
-  new THREE.BoxGeometry(500, 0.4, 350),
-  materials.concrete
+  new THREE.BoxGeometry(550, 0.4, 400),
+  mat.concrete
 );
-apron.position.set(350, -1.6, -100);
+
+apron.position.set(390, -1.6, -120);
 scene.add(apron);
 
-// Hangares
+// ======================================================
+// HANGARES
+// ======================================================
+
 function createHangar(x, z) {
   const group = new THREE.Group();
   group.position.set(x, 0, z);
 
-  box(group, 100, 35, 100, materials.white, 0, 17, 0);
+  createBox(group, 100, 35, 100, mat.white, 0, 17, 0);
 
   const roof = new THREE.Mesh(
-    new THREE.ConeGeometry(72, 22, 4),
-    materials.dark
+    new THREE.ConeGeometry(75, 20, 4),
+    mat.dark
   );
-  roof.position.y = 45;
+
+  roof.position.y = 44;
   roof.rotation.y = Math.PI / 4;
-  roof.scale.z = 0.8;
   group.add(roof);
 
-  box(group, 65, 24, 2, materials.blue, 0, 12, 51);
+  createBox(group, 65, 24, 2, mat.blue, 0, 12, 51);
 
   scene.add(group);
 }
@@ -170,85 +195,100 @@ createHangar(350, -350);
 createHangar(520, -350);
 createHangar(350, 100);
 
-// Luzes da pista
-for (let z = -700; z <= 700; z += 45) {
-  for (const x of [-53, 53]) {
-    const lamp = new THREE.Mesh(
-      new THREE.SphereGeometry(1.5, 8, 8),
+// ======================================================
+// ILUMINAÇÃO DA PISTA
+// ======================================================
+
+for (let z = -700; z <= 700; z += 50) {
+  for (const x of [-58, 58]) {
+    const light = new THREE.Mesh(
+      new THREE.SphereGeometry(1.3, 8, 8),
       new THREE.MeshBasicMaterial({ color: 0xffffff })
     );
-    lamp.position.set(x, 0, z);
-    scene.add(lamp);
+
+    light.position.set(x, 0, z);
+    scene.add(light);
   }
 }
 
-// ==========================================
-// AVIÃO 3D
-// ==========================================
+// ======================================================
+// AVIÃO
+// ======================================================
 
 const aircraft = new THREE.Group();
 scene.add(aircraft);
 
-// O avião aponta para a direção -Z.
+// Fuselagem
 const fuselage = new THREE.Mesh(
-  new THREE.CylinderGeometry(3.2, 3.8, 34, 32),
-  materials.white
+  new THREE.CylinderGeometry(3.1, 3.6, 36, 32),
+  mat.white
 );
+
 fuselage.rotation.x = Math.PI / 2;
-fuselage.position.y = 0;
-fuselage.position.z = 0;
-fuselage.scale.set(1, 1, 1);
 fuselage.castShadow = true;
 aircraft.add(fuselage);
 
-// Nariz arredondado
+// Nariz
 const nose = new THREE.Mesh(
-  new THREE.SphereGeometry(3.2, 24, 16),
-  materials.white
+  new THREE.SphereGeometry(3.1, 24, 16),
+  mat.white
 );
-nose.position.set(0, 0, -17);
+
+nose.position.z = -17;
 nose.scale.set(1, 0.85, 1.5);
 aircraft.add(nose);
 
-// Cauda traseira
-const tailCone = new THREE.Mesh(
+// Cauda
+const tail = new THREE.Mesh(
   new THREE.ConeGeometry(3.2, 8, 24),
-  materials.white
+  mat.white
 );
-tailCone.rotation.x = -Math.PI / 2;
-tailCone.position.z = 20;
-aircraft.add(tailCone);
+
+tail.rotation.x = -Math.PI / 2;
+tail.position.z = 21;
+aircraft.add(tail);
 
 // Asa principal
-const wing = new THREE.Mesh(
-  new THREE.BoxGeometry(62, 1.1, 10),
-  materials.white
-);
-wing.position.set(0, -1, 1);
-wing.castShadow = true;
-aircraft.add(wing);
+createBox(aircraft, 65, 1, 11, mat.white, 0, -1, 1);
 
 // Pontas das asas
-for (const side of [-1, 1]) {
-  const tip = box(aircraft, 5, 1, 7, materials.blue, side * 32, -1, 1);
-  tip.rotation.z = side * -0.12;
-}
+createBox(aircraft, 5, 1, 7, mat.blue, -33, -1, 1);
+createBox(aircraft, 5, 1, 7, mat.blue, 33, -1, 1);
 
 // Asa traseira
-const rearWing = box(
-  aircraft, 25, 0.7, 5, materials.white, 0, 1, 16
-);
+createBox(aircraft, 26, 0.7, 5, mat.white, 0, 1, 17);
 
 // Estabilizador vertical
-const fin = new THREE.Mesh(
-  new THREE.BoxGeometry(1, 10, 6),
-  materials.blue
-);
-fin.position.set(0, 5, 17);
-fin.rotation.x = -0.2;
-aircraft.add(fin);
+createBox(aircraft, 1, 10, 6, mat.blue, 0, 5, 17);
 
-// Motores
+// Cockpit
+const cockpit = new THREE.Mesh(
+  new THREE.SphereGeometry(2.8, 24, 16),
+  mat.glass
+);
+
+cockpit.position.set(0, 1.7, -13);
+cockpit.scale.set(1, 0.65, 1.6);
+aircraft.add(cockpit);
+
+// Janelas
+for (const side of [-1, 1]) {
+  for (let z = -9; z <= 10; z += 3) {
+    const windowMesh = new THREE.Mesh(
+      new THREE.SphereGeometry(0.42, 12, 8),
+      mat.glass
+    );
+
+    windowMesh.position.set(side * 3.05, 1.2, z);
+    windowMesh.scale.set(0.3, 0.7, 1.3);
+    aircraft.add(windowMesh);
+  }
+}
+
+// ======================================================
+// MOTORES
+// ======================================================
+
 const engines = [];
 
 for (const side of [-1, 1]) {
@@ -256,68 +296,39 @@ for (const side of [-1, 1]) {
   engine.position.set(side * 16, -3, 1);
   aircraft.add(engine);
 
-  const body = new THREE.Mesh(
-    new THREE.CylinderGeometry(2.4, 2.4, 9, 24),
-    materials.dark
-  );
-  body.rotation.x = Math.PI / 2;
-  engine.add(body);
+  const body = createCylinder(engine, 2.4, 9, mat.dark, 0, 0, 0);
 
-  const intake = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.8, 2.2, 0.5, 24),
-    materials.blue
+  const intake = createCylinder(
+    engine, 1.9, 0.5, mat.blue, 0, 0, -4.5
   );
-  intake.rotation.x = Math.PI / 2;
-  intake.position.z = -4.5;
-  engine.add(intake);
 
   const fan = new THREE.Group();
   fan.position.z = -4.8;
   engine.add(fan);
 
   for (let i = 0; i < 8; i++) {
-    const blade = box(engine, 0.35, 2.8, 0.12, materials.white, 0, 0, 0);
-    blade.position.set(0, 0, 0);
+    const blade = createBox(
+      fan, 0.35, 2.8, 0.12, mat.white, 0, 1.2, 0
+    );
+
     blade.rotation.z = (Math.PI * 2 * i) / 8;
-    fan.add(blade);
   }
 
   engines.push(fan);
 }
 
-// Janelas do cockpit
-const cockpit = new THREE.Mesh(
-  new THREE.SphereGeometry(2.8, 24, 16),
-  materials.glass
-);
-cockpit.position.set(0, 1.7, -13);
-cockpit.scale.set(1, 0.65, 1.6);
-aircraft.add(cockpit);
+// ======================================================
+// TREM DE POUSO
+// ======================================================
 
-// Fileira de janelas
-for (const side of [-1, 1]) {
-  for (let z = -9; z <= 10; z += 3) {
-    const windowMesh = new THREE.Mesh(
-      new THREE.SphereGeometry(0.42, 12, 8),
-      materials.glass
-    );
-    windowMesh.position.set(side * 3.05, 1.2, z);
-    windowMesh.scale.set(0.3, 0.7, 1.3);
-    aircraft.add(windowMesh);
-  }
-}
-
-// Trem de pouso
 function createWheel(x, z) {
-  const strut = cylinder(
-    aircraft, 0.25, 0.25, 3, materials.dark,
-    x, -3, z
-  );
+  createCylinder(aircraft, 0.25, 3, mat.dark, x, -3, z);
 
   const wheel = new THREE.Mesh(
     new THREE.CylinderGeometry(1.1, 1.1, 0.7, 20),
-    materials.rubber
+    mat.rubber
   );
+
   wheel.rotation.z = Math.PI / 2;
   wheel.position.set(x, -4.5, z);
   aircraft.add(wheel);
@@ -327,42 +338,49 @@ createWheel(-7, 8);
 createWheel(7, 8);
 createWheel(0, -14);
 
+// Posição inicial
 aircraft.position.set(0, 18, 400);
 
-// ==========================================
+// ======================================================
 // CÂMERA
-// ==========================================
+// ======================================================
 
 let cameraMode = 0;
 
-const cameraPositions = [
+const cameraOffsets = [
   new THREE.Vector3(0, 18, 65),
-  new THREE.Vector3(0, 9, 30),
+  new THREE.Vector3(0, 9, 32),
   new THREE.Vector3(0, 5, -25)
 ];
 
 function updateCamera() {
-  const offset = cameraPositions[cameraMode];
-  const targetPosition = offset.clone().applyQuaternion(aircraft.quaternion);
-  targetPosition.add(aircraft.position);
+  const offset = cameraOffsets[cameraMode]
+    .clone()
+    .applyQuaternion(aircraft.quaternion);
 
-  camera.position.lerp(targetPosition, 0.06);
-  const lookTarget = aircraft.position.clone();
-  lookTarget.y += 1;
-  camera.lookAt(lookTarget);
+  const desiredPosition = aircraft.position.clone().add(offset);
+
+  camera.position.lerp(desiredPosition, 0.08);
+
+  const target = aircraft.position.clone();
+  target.y += 1;
+
+  camera.lookAt(target);
 }
 
-// ==========================================
-// CONTROLES DE VOO
-// ==========================================
+// ======================================================
+// ESTADO DO VOO
+// ======================================================
 
 const keys = {};
+
 let started = false;
 let speed = 0;
-let altitude = 18;
 let throttle = 0;
 let pitch = 0;
 let roll = 0;
+let altitude = 18;
+let verticalSpeed = 0;
 
 window.addEventListener("keydown", (event) => {
   keys[event.key.toLowerCase()] = true;
@@ -372,24 +390,58 @@ window.addEventListener("keyup", (event) => {
   keys[event.key.toLowerCase()] = false;
 });
 
+window.addEventListener("blur", () => {
+  Object.keys(keys).forEach(key => keys[key] = false);
+});
+
+// ======================================================
+// CONTROLES E FÍSICA INICIAL
+// ======================================================
+
 function updateFlight(delta) {
   if (!started) return;
 
-  if (keys["w"] || keys["arrowup"]) pitch = Math.min(pitch + delta * 0.5, 0.5);
-  if (keys["s"] || keys["arrowdown"]) pitch = Math.max(pitch - delta * 0.5, -0.5);
-  if (keys["a"] || keys["arrowleft"]) roll = Math.min(roll + delta * 0.8, 0.7);
-  if (keys["d"] || keys["arrowright"]) roll = Math.max(roll - delta * 0.8, -0.7);
+  if (keys["w"] || keys["arrowup"]) {
+    pitch = Math.min(pitch + delta * 0.5, 0.5);
+  }
 
-  if (keys["shift"]) throttle = Math.min(throttle + delta * 0.2, 1);
-  if (keys["control"]) throttle = Math.max(throttle - delta * 0.2, 0);
+  if (keys["s"] || keys["arrowdown"]) {
+    pitch = Math.max(pitch - delta * 0.5, -0.5);
+  }
 
-  speed += (throttle * 180 - speed) * delta * 0.15;
-  aircraft.rotation.x += (pitch - aircraft.rotation.x) * delta * 1.5;
-  aircraft.rotation.z += (roll - aircraft.rotation.z) * delta * 1.5;
+  if (keys["a"] || keys["arrowleft"]) {
+    roll = Math.min(roll + delta * 0.8, 0.7);
+  }
+
+  if (keys["d"] || keys["arrowright"]) {
+    roll = Math.max(roll - delta * 0.8, -0.7);
+  }
+
+  if (keys["shift"]) {
+    throttle = Math.min(throttle + delta * 0.2, 1);
+  }
+
+  if (keys["control"]) {
+    throttle = Math.max(throttle - delta * 0.2, 0);
+  }
+
+  speed += (throttle * 220 - speed) * delta * 0.15;
+
+  aircraft.rotation.x +=
+    (pitch - aircraft.rotation.x) * delta * 1.5;
+
+  aircraft.rotation.z +=
+    (roll - aircraft.rotation.z) * delta * 1.5;
 
   aircraft.translateZ(-speed * delta * 0.25);
-  aircraft.position.y += Math.sin(pitch) * speed * delta * 0.08;
-  aircraft.position.y = Math.max(4, Math.min(aircraft.position.y, 1000));
+
+  verticalSpeed = Math.sin(pitch) * speed * 0.08;
+  aircraft.position.y += verticalSpeed * delta;
+
+  aircraft.position.y = Math.max(
+    4,
+    Math.min(aircraft.position.y, 1500)
+  );
 
   altitude = aircraft.position.y;
 
@@ -400,61 +452,112 @@ function updateFlight(delta) {
   updateHUD();
 }
 
-// ==========================================
-// HUD
-// ==========================================
+// ======================================================
+// HUD — IDS DO HTML REAL
+// ======================================================
 
 function updateHUD() {
-  const speedElement = document.getElementById("speedValue");
-  const altitudeElement = document.getElementById("altitudeValue");
-  const powerElement = document.getElementById("powerValue");
+  if ($("speed")) {
+    $("speed").textContent = String(Math.round(speed)).padStart(3, "0");
+  }
 
-  if (speedElement) speedElement.textContent = Math.round(speed) + " km/h";
-  if (altitudeElement) altitudeElement.textContent = Math.round(altitude) + " m";
-  if (powerElement) powerElement.textContent = Math.round(throttle * 100) + "%";
+  if ($("altitude")) {
+    $("altitude").textContent = String(Math.round(altitude * 3.28084)).padStart(4, "0");
+  }
+
+  if ($("verticalSpeed")) {
+    $("verticalSpeed").textContent = String(Math.round(verticalSpeed * 196.85)).padStart(3, "0");
+  }
+
+  if ($("enginePower")) {
+    $("enginePower").textContent = String(Math.round(throttle * 100)).padStart(3, "0");
+  }
 }
 
-// ==========================================
-// BOTÕES
-// ==========================================
+// ======================================================
+// BOTÃO INICIAR
+// ======================================================
 
-const startButton = document.getElementById("startButton");
-if (startButton) {
-  startButton.addEventListener("click", () => {
-    started = true;
-    if (startScreen) startScreen.classList.add("hidden");
-  });
-}
+$("startButton")?.addEventListener("click", () => {
+  started = true;
 
-const cameraButton = document.getElementById("cameraButton");
-if (cameraButton) {
-  cameraButton.addEventListener("click", () => {
-    cameraMode = (cameraMode + 1) % cameraPositions.length;
-  });
-}
-
-const menuButton = document.getElementById("menuButton");
-const flightMenu = document.getElementById("flightMenu");
-
-if (menuButton && flightMenu) {
-  menuButton.addEventListener("click", () => {
-    flightMenu.classList.toggle("hidden");
-  });
-}
-
-// ==========================================
-// RESIZE
-// ==========================================
-
-window.addEventListener("resize", () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  if (startScreen) {
+    startScreen.style.display = "none";
+  }
 });
 
-// ==========================================
+// ======================================================
+// BOTÃO CÂMERA
+// ======================================================
+
+$("cameraButton")?.addEventListener("click", () => {
+  cameraMode = (cameraMode + 1) % cameraOffsets.length;
+});
+
+// ======================================================
+// MENU
+// ======================================================
+
+$("menuButton")?.addEventListener("click", () => {
+  if (flightMenu) {
+    flightMenu.classList.remove("hidden");
+    flightMenu.style.display = "flex";
+  }
+});
+
+$("closeMenu")?.addEventListener("click", () => {
+  if (flightMenu) {
+    flightMenu.classList.add("hidden");
+    flightMenu.style.display = "none";
+  }
+});
+
+$("returnHangar")?.addEventListener("click", () => {
+  started = false;
+
+  aircraft.position.set(0, 18, 400);
+  aircraft.rotation.set(0, 0, 0);
+
+  speed = 0;
+  throttle = 0;
+  pitch = 0;
+  roll = 0;
+  altitude = 18;
+  verticalSpeed = 0;
+
+  if (startScreen) {
+    startScreen.style.display = "flex";
+  }
+
+  if (flightMenu) {
+    flightMenu.classList.add("hidden");
+    flightMenu.style.display = "none";
+  }
+
+  updateHUD();
+});
+
+// ======================================================
+// RESPONSIVIDADE
+// ======================================================
+
+function resize() {
+  const width = flightScene.clientWidth;
+  const height = flightScene.clientHeight;
+
+  if (!width || !height) return;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(width, height);
+}
+
+window.addEventListener("resize", resize);
+
+// ======================================================
 // LOOP PRINCIPAL
-// ==========================================
+// ======================================================
 
 const clock = new THREE.Clock();
 
@@ -469,11 +572,20 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+// ======================================================
+// INICIALIZAÇÃO
+// ======================================================
+
+updateHUD();
+resize();
 updateCamera();
 animate();
 
-if (loadingScreen) {
-  loadingScreen.classList.add("hidden");
+// Esconde o carregamento somente depois da primeira renderização.
+renderer.render(scene, camera);
+
+if (loading) {
+  loading.style.display = "none";
 }
 
-console.log("SKYFORGE FLIGHT iniciado com sucesso!");
+console.log("SKYFORGE FLIGHT: sistemas inicializados.");
