@@ -1,144 +1,172 @@
 
-/* =========================================
-   SKYFORGE FLIGHT — VISUAL SYSTEM
-========================================= */
+/* =====================================================
+   SKYFORGE FLIGHT — PREMIUM FLIGHT INTERFACE
+   ===================================================== */
 
 :root {
-  --background: #081421;
-  --panel: #101f30;
-  --blue: #42bdf1;
-  --gold: #e7b75c;
-  --white: #f3f7fc;
-  --muted: #9aabbd;
+  --bg: #071522;
+  --panel: rgba(8, 22, 37, 0.88);
+  --panel-light: rgba(17, 39, 58, 0.85);
+  --white: #f2f7fb;
+  --muted: #9aafc0;
+  --blue: #58baff;
+  --blue-light: #9cddff;
+  --border: rgba(180, 220, 255, 0.16);
+  --danger: #ff6262;
+  --success: #65e6b1;
+  --font: Arial, Helvetica, sans-serif;
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  background: var(--background);
+  background: var(--bg);
   color: var(--white);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font);
+}
+
+body {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button {
   font: inherit;
+  color: inherit;
   cursor: pointer;
+  border: none;
+  outline: none;
 }
 
-#game {
+/* =====================================================
+   LOADING
+   ===================================================== */
+
+.loading-screen {
   position: fixed;
   inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(ellipse at center, #142d43 0%, #071522 65%);
+}
+
+.loading-content {
+  width: min(420px, 80%);
+  text-align: center;
+}
+
+.loading-logo {
+  font-size: clamp(24px, 5vw, 38px);
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+
+.loading-logo span {
+  color: var(--blue);
+}
+
+.loading-bar {
+  height: 3px;
+  margin: 32px 0 18px;
+  background: rgba(255,255,255,.1);
+  overflow: hidden;
+}
+
+.loading-bar div {
+  width: 45%;
+  height: 100%;
+  background: var(--blue);
+  animation: loading 1.5s infinite ease-in-out;
+}
+
+.loading-content p {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+@keyframes loading {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(250%); }
+}
+
+/* =====================================================
+   GAME LAYOUT
+   ===================================================== */
+
+#game {
+  position: relative;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
 }
 
 #flightScene {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(ellipse at 50% 75%, #35566c 0%, transparent 55%),
-    linear-gradient(180deg, #102d47, #7399aa 65%, #b5c5c0);
+  overflow: hidden;
+  background: linear-gradient(#8fc9ee, #d8e8ef);
+  z-index: 1;
 }
 
 #flightScene canvas {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
-  touch-action: none;
+  outline: none;
 }
 
-#loading {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 22px;
-  background: #081421;
-  transition: opacity .7s;
-}
-
-#loading.hide {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loading-logo {
-  font-size: 30px;
-  font-weight: 900;
-  letter-spacing: 4px;
-}
-
-.loading-logo span,
-.brand span {
-  color: var(--blue);
-}
-
-.loading-bar {
-  width: 220px;
-  height: 3px;
-  background: #23384c;
-  overflow: hidden;
-}
-
-.loading-bar div {
-  height: 100%;
-  width: 45%;
-  background: var(--blue);
-  animation: loading 1.5s infinite ease-in-out;
-}
-
-#loading p {
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 2px;
-}
-
-@keyframes loading {
-  0% { transform: translateX(-110%); }
-  100% { transform: translateX(330%); }
-}
+/* =====================================================
+   TOPBAR
+   ===================================================== */
 
 .topbar {
   position: absolute;
-  z-index: 10;
+  z-index: 20;
   top: 0;
   left: 0;
-  right: 0;
-  height: 76px;
-  padding: 0 30px;
+  width: 100%;
+  min-height: 85px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 15px 35px;
   background: linear-gradient(
     180deg,
-    rgba(5, 15, 26, .95),
-    rgba(5, 15, 26, .45)
+    rgba(3, 14, 25, .85),
+    rgba(3, 14, 25, 0)
   );
-  border-bottom: 1px solid rgba(255,255,255,.08);
 }
 
 .brand strong {
-  font-size: 19px;
-  letter-spacing: 2px;
+  display: block;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 3px;
+}
+
+.brand strong span {
+  color: var(--blue);
 }
 
 .brand small {
   display: block;
-  color: var(--muted);
+  margin-top: 6px;
+  color: #a5bdcf;
   font-size: 9px;
-  letter-spacing: 2px;
-  margin-top: 5px;
+  letter-spacing: 3px;
 }
 
 .top-actions {
@@ -146,153 +174,209 @@ button {
   gap: 10px;
 }
 
-.top-actions button {
-  background: rgba(15, 35, 52, .8);
-  border: 1px solid rgba(255,255,255,.17);
-  color: white;
-  padding: 11px 17px;
+.interface-button {
+  padding: 12px 20px;
+  border: 1px solid var(--border);
+  background: rgba(8, 24, 40, .7);
+  backdrop-filter: blur(12px);
+  border-radius: 3px;
   font-size: 10px;
-  letter-spacing: 1px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  transition: .2s;
+}
+
+.interface-button:hover {
+  border-color: var(--blue);
+  background: rgba(48, 126, 180, .3);
+}
+
+/* =====================================================
+   FLIGHT HUD
+   ===================================================== */
+
+.flight-hud {
+  position: absolute;
+  z-index: 10;
+  top: 105px;
+  left: 30px;
+  display: flex;
+  gap: 8px;
+}
+
+.hud-item {
+  min-width: 105px;
+  padding: 13px 15px;
+  background: rgba(5, 20, 34, .68);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
   border-radius: 4px;
 }
 
-.top-actions button:hover {
-  border-color: var(--blue);
-  background: #123d56;
-}
-
-#flightHUD {
-  position: absolute;
-  z-index: 5;
-  top: 95px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 30px;
-  padding: 13px 22px;
-  background: rgba(5, 17, 29, .65);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 5px;
-  backdrop-filter: blur(12px);
-}
-
-#flightHUD div {
-  min-width: 65px;
-  text-align: center;
-}
-
-#flightHUD small {
+.hud-item small {
   display: block;
+  color: #a7c0d1;
   font-size: 8px;
-  color: var(--muted);
-  letter-spacing: 1px;
+  letter-spacing: 1.4px;
+  margin-bottom: 8px;
 }
 
-#flightHUD strong {
-  display: block;
-  font-size: 20px;
-  margin: 5px 0 2px;
+.hud-item strong {
+  display: inline-block;
+  font-size: 23px;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
-#flightHUD span {
-  font-size: 8px;
-  color: var(--blue);
+.hud-item span {
+  margin-left: 5px;
+  color: var(--blue-light);
+  font-size: 9px;
 }
+
+/* =====================================================
+   LABELS
+   ===================================================== */
 
 #sceneLabel {
   position: absolute;
-  z-index: 3;
-  top: 100px;
+  z-index: 10;
   left: 30px;
-  font-size: 10px;
-  letter-spacing: 2px;
+  bottom: 35px;
   color: white;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-shadow: 0 2px 5px rgba(0,0,0,.8);
 }
 
 #crosshair {
   position: absolute;
-  z-index: 3;
-  left: 50%;
+  z-index: 5;
   top: 50%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  color: rgba(255,255,255,.55);
-  font-size: 20px;
+  color: rgba(255,255,255,.65);
+  font-size: 24px;
   pointer-events: none;
 }
 
-#startScreen {
+#flightStatus {
   position: absolute;
-  z-index: 8;
+  right: 30px;
+  bottom: 35px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: white;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-shadow: 0 2px 5px black;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--success);
+}
+
+/* =====================================================
+   START SCREEN
+   ===================================================== */
+
+.start-screen {
+  position: absolute;
+  z-index: 30;
   inset: 0;
   display: flex;
   align-items: center;
   padding: 0 9%;
   background: linear-gradient(
     90deg,
-    rgba(4, 13, 23, .88),
-    rgba(4, 13, 23, .38) 55%,
+    rgba(4, 17, 29, .85),
+    rgba(4, 17, 29, .32),
     transparent
   );
 }
 
 .welcome {
-  max-width: 480px;
+  max-width: 570px;
+  margin-top: 30px;
 }
 
 .eyebrow {
-  color: var(--gold);
+  color: var(--blue);
   font-size: 10px;
-  letter-spacing: 4px;
+  font-weight: 700;
+  letter-spacing: 5px;
   margin-bottom: 22px;
 }
 
 .welcome h1 {
-  font-size: clamp(45px, 8vw, 92px);
-  line-height: .93;
-  letter-spacing: -3px;
+  font-size: clamp(48px, 8vw, 100px);
+  line-height: .95;
+  letter-spacing: -4px;
   font-weight: 900;
 }
 
 .welcome h1 span {
-  color: var(--blue);
+  color: var(--blue-light);
 }
 
 .welcome p {
-  max-width: 350px;
-  margin-top: 24px;
-  margin-bottom: 30px;
-  color: #c0cfda;
-  font-size: 13px;
+  max-width: 420px;
+  margin-top: 25px;
+  color: #d0dce5;
   line-height: 1.8;
+  font-size: 14px;
 }
 
-#startButton {
-  padding: 17px 25px;
-  border: 1px solid var(--blue);
-  border-radius: 3px;
-  background: #087ba7;
-  color: white;
+.primary-button {
+  margin-top: 35px;
+  padding: 18px 25px;
+  min-width: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: #061522;
+  background: var(--blue-light);
+  font-weight: 900;
   font-size: 11px;
-  font-weight: bold;
   letter-spacing: 2px;
-  box-shadow: 0 8px 30px rgba(0,130,190,.22);
-  transition: .2s;
+  transition: .25s;
+  border-radius: 3px;
 }
 
-#startButton:hover {
-  background: #119aca;
-  transform: translateY(-2px);
+.primary-button:hover {
+  transform: translateY(-3px);
+  background: white;
+  box-shadow: 0 10px 35px rgba(88, 186, 255, .25);
 }
 
-#flightMenu {
+.start-caption {
+  margin-top: 25px;
+  color: rgba(255,255,255,.55);
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+
+/* =====================================================
+   MENU MODAL
+   ===================================================== */
+
+.modal {
   position: absolute;
-  z-index: 20;
+  z-index: 50;
   inset: 0;
-  display: grid;
-  place-items: center;
-  background: rgba(3,10,18,.75);
-  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(2, 10, 18, .75);
+  backdrop-filter: blur(9px);
 }
 
 .hidden {
@@ -301,117 +385,227 @@ button {
 
 .menu-card {
   position: relative;
-  width: min(90%, 390px);
-  padding: 35px;
-  background: #102235;
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 8px;
+  width: min(430px, 100%);
+  padding: 40px;
+  background: #0b1e30;
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 100px rgba(0,0,0,.45);
 }
 
 .menu-card h2 {
-  font-size: 20px;
+  font-size: 26px;
   letter-spacing: 2px;
 }
 
 .menu-card p {
-  margin: 12px 0 25px;
+  margin-top: 12px;
   color: var(--muted);
-  font-size: 12px;
-}
-
-.menu-card button:not(.close-button) {
-  width: 100%;
-  padding: 13px;
-  background: #087ba7;
-  border: 1px solid var(--blue);
-  color: white;
-  font-weight: bold;
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: 13px;
 }
 
 .close-button {
   position: absolute;
-  top: 12px;
-  right: 15px;
-  background: transparent;
-  border: 0;
-  color: white;
-  font-size: 19px;
+  top: 17px;
+  right: 17px;
+  width: 34px;
+  height: 34px;
+  background: rgba(255,255,255,.08);
+  border-radius: 3px;
 }
+
+.menu-options {
+  display: grid;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.menu-options button {
+  padding: 15px;
+  background: var(--panel-light);
+  border: 1px solid var(--border);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.menu-options button:hover {
+  background: #16446a;
+}
+
+/* =====================================================
+   TOUCH CONTROLS
+   ===================================================== */
+
+.touch-controls {
+  display: none;
+  position: absolute;
+  z-index: 15;
+  left: 15px;
+  right: 15px;
+  bottom: 75px;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.touch-controls button {
+  pointer-events: auto;
+  min-width: 48px;
+  min-height: 48px;
+  color: white;
+  background: rgba(5, 20, 34, .75);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 8px;
+  touch-action: none;
+}
+
+.touch-direction {
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  grid-template-rows: repeat(2, 48px);
+  gap: 5px;
+}
+
+#touchLeft { grid-column: 1; grid-row: 2; }
+#touchUp { grid-column: 2; grid-row: 1; }
+#touchDown { grid-column: 2; grid-row: 2; }
+#touchRight { grid-column: 3; grid-row: 2; }
+
+.touch-power {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.touch-power button {
+  padding: 0 12px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
 
 .bottom-bar {
   position: absolute;
-  z-index: 10;
+  z-index: 20;
   bottom: 0;
   left: 0;
-  right: 0;
-  height: 32px;
+  width: 100%;
+  min-height: 35px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 25px;
-  background: rgba(5,15,25,.75);
-  color: #9aabbd;
+  padding: 0 30px;
+  background: rgba(3, 13, 23, .55);
+  color: rgba(255,255,255,.65);
   font-size: 8px;
   letter-spacing: 2px;
 }
 
-/* MOBILE */
+/* =====================================================
+   RESPONSIVIDADE
+   ===================================================== */
 
-@media(max-width:700px) {
+@media (max-width: 800px) {
   .topbar {
-    height: 62px;
-    padding: 0 12px;
+    min-height: 65px;
+    padding: 10px 15px;
   }
 
   .brand strong {
-    font-size: 14px;
+    font-size: 15px;
+    letter-spacing: 2px;
   }
 
   .brand small {
     font-size: 7px;
+    letter-spacing: 1px;
   }
 
-  .top-actions button {
-    padding: 9px;
-    font-size: 8px;
+  .interface-button {
+    padding: 10px 12px;
+    font-size: 9px;
   }
 
-  #flightHUD {
-    top: 78px;
-    gap: 9px;
-    padding: 9px;
+  .flight-hud {
+    top: 75px;
+    left: 10px;
+    right: 10px;
+    gap: 5px;
   }
 
-  #flightHUD div {
-    min-width: 54px;
+  .hud-item {
+    min-width: 0;
+    flex: 1;
+    padding: 9px 7px;
   }
 
-  #flightHUD strong {
-    font-size: 15px;
+  .hud-item small {
+    font-size: 6px;
+    letter-spacing: .5px;
   }
 
-  #sceneLabel {
-    top: 140px;
-    left: 12px;
+  .hud-item strong {
+    font-size: 17px;
   }
 
-  #startScreen {
-    align-items: center;
+  .hud-item span {
+    font-size: 7px;
+    margin-left: 1px;
+  }
+
+  .start-screen {
     padding: 0 7%;
   }
 
   .welcome h1 {
-    font-size: 54px;
+    font-size: clamp(48px, 12vw, 75px);
+    letter-spacing: -2px;
   }
 
   .welcome p {
-    font-size: 11px;
+    font-size: 12px;
+  }
+
+  .touch-controls {
+    display: flex;
+  }
+
+  #sceneLabel {
+    left: 15px;
+    bottom: 40px;
+    font-size: 8px;
+  }
+
+  #flightStatus {
+    right: 15px;
+    bottom: 40px;
+    font-size: 7px;
   }
 
   .bottom-bar {
-    padding: 0 10px;
+    padding: 0 12px;
     font-size: 7px;
+  }
+}
+
+@media (max-height: 500px) {
+  .welcome h1 {
+    font-size: 50px;
+  }
+
+  .welcome p {
+    margin-top: 10px;
+  }
+
+  .primary-button {
+    margin-top: 15px;
+    padding: 12px 18px;
+  }
+
+  .start-caption {
+    display: none;
   }
 }
