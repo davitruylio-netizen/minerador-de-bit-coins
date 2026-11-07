@@ -4,516 +4,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080b16">
-<title>Scratch Universe | Explore milhares de jogos</title>
+<meta name="theme-color" content="#090b18">
+<title>Scratch Universe</title>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-
 :root {
-  --bg:#080b16;
-  --panel:#111629;
-  --panel2:#191f38;
-  --purple:#8757ff;
-  --blue:#27a8ff;
-  --text:#fff;
-  --muted:#929bb5;
-  --border:rgba(255,255,255,.09);
+  --bg: #090b18;
+  --panel: #11152a;
+  --panel2: #171d36;
+  --text: #f5f6ff;
+  --muted: #9ba5c5;
+  --purple: #8657ff;
+  --blue: #35a8ff;
+  --border: rgba(255,255,255,.09);
+  --green: #43d9a3;
+  --red: #ff647c;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+* { box-sizing: border-box; }
 
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Arial,sans-serif;
-  min-height:100vh;
-}
+html { scroll-behavior: smooth; }
 
-button,input{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-
-header{
-  height:75px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 5%;
-  background:rgba(8,11,22,.94);
-  border-bottom:1px solid var(--border);
-  position:sticky;
-  top:0;
-  z-index:100;
-  backdrop-filter:blur(18px);
-}
-
-.logo{
-  font-size:24px;
-  font-weight:900;
-  letter-spacing:-1px;
-  cursor:pointer;
-  white-space:nowrap;
-}
-
-.logo span{color:var(--purple)}
-
-.header-right{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.header-btn{
-  background:var(--panel);
-  border:1px solid var(--border);
-  color:white;
-  border-radius:10px;
-  padding:10px 14px;
-  font-weight:700;
-}
-
-.header-btn:hover{border-color:var(--purple)}
-
-.search-area{
-  width:min(430px,45%);
-  position:relative;
-}
-
-.search-box{
-  display:flex;
-  align-items:center;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:0 15px;
-  transition:.2s;
-}
-
-.search-box:focus-within{
-  border-color:var(--purple);
-  box-shadow:0 0 20px #8757ff22;
-}
-
-.search-box input{
-  width:100%;
-  height:45px;
-  background:transparent;
-  border:0;
-  outline:0;
-  color:white;
-  font-size:14px;
-}
-
-main{
-  width:min(1400px,92%);
-  margin:auto;
-}
-
-.hero{
-  margin:35px 0;
-  min-height:300px;
-  border-radius:23px;
-  padding:55px;
-  display:flex;
-  align-items:center;
-  position:relative;
-  overflow:hidden;
+body {
+  margin: 0;
+  min-height: 100vh;
   background:
-    radial-gradient(circle at 80% 30%,#8757ff66,transparent 35%),
-    radial-gradient(circle at 95% 100%,#27a8ff44,transparent 35%),
-    linear-gradient(115deg,#151b39,#101329);
-  border:1px solid var(--border);
+    radial-gradient(ellipse at 15% 0%, rgba(100,60,220,.19), transparent 35%),
+    radial-gradient(ellipse at 90% 10%, rgba(20,130,255,.13), transparent 30%),
+    var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, Arial, sans-serif;
 }
 
-.hero-content{position:relative;z-index:2}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
 
-.hero-tag{
-  display:inline-block;
-  background:#8757ff33;
-  border:1px solid #8757ff66;
-  color:#c5b3ff;
-  padding:8px 13px;
-  border-radius:30px;
-  font-size:11px;
-  font-weight:800;
-  margin-bottom:18px;
+header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(9,11,24,.9);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border);
 }
 
-.hero h1{
-  font-size:clamp(35px,5vw,61px);
-  line-height:1.08;
-  font-weight:900;
-  max-width:700px;
-  letter-spacing:-2px;
+.nav {
+  max-width: 1400px;
+  margin: auto;
+  padding: 15px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
 }
 
-.hero h1 span{
-  background:linear-gradient(90deg,#a98aff,#37b5ff);
-  background-clip:text;
-  -webkit-background-clip:text;
-  color:transparent;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -.7px;
 }
 
-.hero p{
-  color:#aeb7d0;
-  line-height:1.7;
-  max-width:550px;
-  margin-top:17px;
-  font-size:14px;
+.logo-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg,var(--purple),var(--blue));
+  box-shadow: 0 5px 25px #704cff55;
 }
 
-.hero-buttons{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:25px;
+.logo span:last-child {
+  background: linear-gradient(90deg,#b99aff,#54c7ff);
+  color: transparent;
+  background-clip: text;
 }
 
-.primary-btn{
-  border:0;
-  border-radius:10px;
-  padding:14px 22px;
-  color:white;
-  background:linear-gradient(110deg,var(--purple),var(--blue));
-  font-weight:800;
-  transition:.2s;
+.nav-actions {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
 }
 
-.primary-btn:hover{transform:translateY(-3px);filter:brightness(1.15)}
-
-.secondary-btn{
-  background:#ffffff10;
-  border:1px solid #ffffff22;
-  color:white;
-  padding:14px 22px;
-  border-radius:10px;
-  font-weight:700;
+.btn {
+  border: 1px solid var(--border);
+  background: var(--panel2);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 11px;
+  transition: .2s;
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin:25px 0 40px;
+.btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--purple);
 }
 
-.stat{
-  background:var(--panel);
-  border:1px solid var(--border);
-  padding:19px;
-  border-radius:14px;
+.btn.primary {
+  border: 0;
+  background: linear-gradient(110deg,var(--purple),#426fff);
+  font-weight: 750;
 }
 
-.stat strong{
-  display:block;
-  font-size:23px;
-  font-weight:900;
+.btn.active {
+  background: #6844d9;
+  border-color: #a58aff;
 }
 
-.stat span{
-  display:block;
-  color:var(--muted);
-  font-size:12px;
-  margin-top:5px;
+main {
+  width: min(1400px, 92%);
+  margin: auto;
 }
 
-.categories{
-  display:flex;
-  gap:10px;
-  overflow-x:auto;
-  padding:5px 0 15px;
-  scrollbar-width:thin;
+.hero {
+  padding: 65px 0 40px;
+  text-align: center;
 }
 
-.category{
-  flex-shrink:0;
-  padding:11px 17px;
-  border-radius:30px;
-  border:1px solid var(--border);
-  background:var(--panel);
-  color:#b6bfd5;
-  font-size:12px;
-  font-weight:700;
-  transition:.2s;
+.eyebrow {
+  display: inline-block;
+  padding: 7px 13px;
+  color: #c9b9ff;
+  background: #704cff20;
+  border: 1px solid #8a68ff55;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
-.category:hover,.category.active{
-  background:var(--purple);
-  border-color:var(--purple);
-  color:white;
+.hero h1 {
+  margin: 20px 0 12px;
+  font-size: clamp(38px,7vw,76px);
+  line-height: 1.05;
+  letter-spacing: -3px;
 }
 
-.section{
-  margin-top:35px;
-  scroll-margin-top:95px;
+.gradient-text {
+  background: linear-gradient(100deg,#a783ff,#4bc5ff);
+  color: transparent;
+  background-clip: text;
 }
 
-.section-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
+.hero p {
+  color: var(--muted);
+  max-width: 650px;
+  margin: auto;
+  line-height: 1.7;
 }
 
-.section-title{
-  font-size:23px;
-  font-weight:900;
+.search-area {
+  max-width: 790px;
+  margin: 28px auto 0;
 }
 
-.section-subtitle{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:6px;
+.search-box {
+  display: flex;
+  gap: 9px;
+  padding: 8px;
+  background: rgba(19,24,47,.95);
+  border: 1px solid #7654e977;
+  border-radius: 16px;
+  box-shadow: 0 15px 55px #0005;
 }
 
-.section-action{
-  background:transparent;
-  border:0;
-  color:#ae91ff;
-  font-size:12px;
-  font-weight:800;
+.search-box input {
+  min-width: 0;
+  flex: 1;
+  padding: 12px;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: white;
+  font-size: 16px;
 }
 
-.games-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(215px,1fr));
-  gap:19px;
+.search-box input::placeholder { color: #818ba9; }
+
+.search-box button {
+  padding: 0 24px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(110deg,var(--purple),#426fff);
+  color: white;
+  font-weight: 800;
 }
 
-.game-card{
-  overflow:hidden;
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
-  transition:.25s;
-  min-width:0;
-  animation:appear .35s ease both;
+.search-hint {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 10px;
 }
 
-@keyframes appear{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  margin-top: 28px;
+  flex-wrap: wrap;
 }
 
-.game-card:hover{
-  transform:translateY(-6px);
-  border-color:#8757ff99;
-  box-shadow:0 12px 35px #8757ff22;
+.stat strong {
+  display: block;
+  font-size: 21px;
 }
 
-.game-image{
-  position:relative;
-  overflow:hidden;
-  background:#1a2140;
-  aspect-ratio:16/10;
+.stat span {
+  color: var(--muted);
+  font-size: 12px;
 }
 
-.game-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  transition:.4s;
+.section {
+  padding: 25px 0 40px;
 }
 
-.game-card:hover .game-image img{transform:scale(1.06)}
-
-.favorite-btn{
-  position:absolute;
-  top:10px;
-  right:10px;
-  width:34px;
-  height:34px;
-  border:1px solid #ffffff33;
-  border-radius:50%;
-  background:#080b16bb;
-  color:white;
-  font-size:17px;
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-.favorite-btn.selected{color:#ff5f91}
-
-.game-info{padding:14px}
-
-.game-info h3{
-  font-size:14px;
-  font-weight:800;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.section-heading h2 {
+  font-size: 24px;
+  margin: 0;
+  letter-spacing: -.7px;
 }
 
-.game-info p{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:8px;
+.section-heading p {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 6px 0 0;
 }
 
-.game-meta{
-  display:flex;
-  justify-content:space-between;
-  margin-top:13px;
-  font-size:11px;
-  color:#b8c0d7;
+.filters {
+  display: flex;
+  gap: 9px;
+  flex-wrap: wrap;
+  margin-bottom: 23px;
 }
 
-.game-open{
-  display:block;
-  width:100%;
-  margin-top:13px;
-  background:#8757ff1e;
-  color:#c2afff;
-  border:1px solid #8757ff44;
-  border-radius:8px;
-  padding:10px;
-  font-size:11px;
-  font-weight:800;
+.filter {
+  padding: 9px 14px;
+  border-radius: 30px;
+  background: var(--panel);
+  color: #c2c9df;
+  border: 1px solid var(--border);
 }
 
-.game-open:hover{
-  background:var(--purple);
-  color:white;
+.filter:hover, .filter.active {
+  color: white;
+  background: #6844d9;
+  border-color: #9c7cff;
 }
 
-.loading,.empty-state,.error-state{
-  grid-column:1/-1;
-  padding:55px 20px;
-  text-align:center;
-  color:var(--muted);
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:15px;
+.sort-select {
+  background: var(--panel);
+  color: white;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 9px 12px;
+  max-width: 170px;
 }
 
-.spinner{
-  display:inline-block;
-  width:30px;
-  height:30px;
-  border:3px solid #ffffff20;
-  border-top-color:var(--purple);
-  border-radius:50%;
-  animation:spin .8s linear infinite;
-  margin-bottom:15px;
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 20px;
 }
 
-@keyframes spin{to{transform:rotate(360deg)}}
-
-.load-more{
-  display:block;
-  margin:30px auto 50px;
-  padding:14px 28px;
-  background:var(--panel2);
-  border:1px solid var(--border);
-  color:white;
-  border-radius:10px;
-  font-weight:800;
+.game-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: linear-gradient(145deg,#171d36,#101426);
+  border-radius: 16px;
+  transition: .22s;
+  min-width: 0;
 }
 
-.load-more:hover{border-color:var(--purple)}
-
-.hidden{display:none!important}
-
-.page{
-  padding:35px 0 60px;
+.game-card:hover {
+  transform: translateY(-5px);
+  border-color: #8a68ff99;
+  box-shadow: 0 15px 35px #0005;
 }
 
-.back-btn{
-  border:0;
-  background:transparent;
-  color:#b69aff;
-  margin-bottom:25px;
-  font-weight:800;
+.thumb-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: #202744;
+  overflow: hidden;
 }
 
-.game-detail{
-  background:var(--panel);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:25px;
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: .3s;
 }
 
-.game-detail img{
-  width:100%;
-  max-height:380px;
-  object-fit:cover;
-  border-radius:13px;
+.game-card:hover .thumb { transform: scale(1.045); }
+
+.thumb-fallback {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 42px;
+  color: #b7a3ff;
+  background: linear-gradient(135deg,#30215f,#133e65);
 }
 
-.detail-title{
-  font-size:30px;
-  font-weight:900;
-  margin:22px 0 10px;
+.card-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  background: #080b1cdd;
+  border: 1px solid #ffffff22;
 }
 
-.detail-description{
-  color:var(--muted);
-  line-height:1.8;
-  font-size:14px;
-  margin:15px 0;
-  white-space:pre-wrap;
+.favorite-btn {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #ffffff33;
+  border-radius: 50%;
+  background: #090b18cc;
+  color: white;
+  font-size: 17px;
 }
 
-.detail-actions{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  margin-top:20px;
+.favorite-btn.saved { color: #ff668c; }
+
+.card-content { padding: 14px; }
+
+.game-title {
+  font-weight: 800;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 7px;
 }
 
-.player-frame{
-  width:100%;
-  height:min(70vh,650px);
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:#000;
-  margin-top:20px;
+.creator {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-footer{
-  border-top:1px solid var(--border);
-  margin-top:50px;
-  padding:35px 5%;
-  text-align:center;
-  color:var(--muted);
-  font-size:12px;
-  line-height:2;
+.card-stats {
+  display: flex;
+  gap: 12px;
+  margin: 13px 0;
+  color: #b7c0da;
+  font-size: 11px;
+  flex-wrap: wrap;
 }
 
-footer strong{color:white}
-
-@media(max-width:750px){
-  header{
-    height:auto;
-    min-height:70px;
-    flex-wrap:wrap;
-    padding:12px 4%;
-    gap:12px;
-  }
-  .search-area{
-    order:3;
-    width:100%;
-  }
-  .hero{
-    padding:35px 23px;
-    min-height:290px;
-  }
-  .stats{gap:8px}
-  .stat{padding:13px}
-  .stat strong{font-size:18px}
-  .games-grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:12px;
-  }
-  .game-info{padding:10px}
-  .game-info h3{font-size:12px}
-  .section-title{font-size:19px}
-  .game-detail{padding:15px}
+.card-actions {
+  display: flex;
+  gap: 8px;
 }
 
-@media(max-width:370px){
-  .games-grid{grid-template-columns:1fr}
+.card-actions button {
+  flex: 1;
+  padding: 9px 7px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.play-btn {
+  background: linear-gradient(100deg,var(--purple),#426fff);
+  color: white;
+  border: 0;
+}
+
+.details-btn {
+  background: #252d4b;
+  color: white;
+  border: 1px solid var(--border);
+}
+
+.status {
+  text-align: center;
+  padding: 50px 15px;
+  color: var(--muted);
+  grid-column: 1/-1;
+  background: #12172b99;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #ffffff22;
+  border-top-color: #a88aff;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-title { color: #ff8799; font-weight: 800; }
+
+.load-more-wrap {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.load-more-wrap button {
+  padding: 13px 26px;
+}
+
+footer {
+  margin-top: 50px;
+  padding: 35px 5%;
+  text-align: center;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #050714ed;
+  padding: 20px;
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.show { display: flex; }
+
+.modal-box {
+  width: min(950px,100%);
+  background: #11172d;
+  border: 1px solid #ffffff20;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 80px #0009;
+}
+
+.modal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 19px;
+}
+
+.modal-top h2 {
+  font-size: 17px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.close-btn {
+  border: 0;
+  background: #252d4b;
+  color: white;
+  border-radius: 9px;
+  padding: 8px 12px;
+}
+
+.player-frame {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border: 0;
+  display: block;
+  background: black;
+}
+
+.modal-info {
+  padding: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 200;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222b48;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1px solid #ffffff22;
+  box-shadow: 0 8px 30px #0008;
+  display: none;
+  max-width: 90%;
+  text-align: center;
+  font-size: 13px;
+}
+
+.toast.show { display: block; }
+
+@media(max-width:1050px) {
+  .game-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+}
+
+@media(max-width:720px) {
+  .nav { padding: 12px 4%; }
+  .logo { font-size: 17px; }
+  .nav-actions .btn { padding: 9px 10px; font-size: 12px; }
+  main { width: 92%; }
+  .hero { padding: 45px 0 25px; }
+  .hero h1 { letter-spacing: -1.5px; }
+  .game-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+  .card-content { padding: 11px; }
+  .card-stats { gap: 8px; }
+  .section-heading { align-items: flex-start; flex-direction: column; }
+}
+
+@media(max-width:390px) {
+  .game-grid { grid-template-columns: 1fr; }
+  .search-box button { padding: 0 15px; }
 }
 </style>
 </head>
@@ -521,808 +556,735 @@ footer strong{color:white}
 <body>
 
 <header>
+  <div class="nav">
+    <div class="logo">
+      <div class="logo-icon">🚀</div>
+      <span>SCRATCH UNIVERSE</span>
+    </div>
 
-  <div class="logo" onclick="showHome()">
-    SCRATCH <span>UNIVERSE</span>
-  </div>
-
-  <div class="search-area">
-    <div class="search-box">
-      <span>🔎</span>
-      <input
-        id="searchInput"
-        type="search"
-        placeholder="Pesquise qualquer jogo do Scratch..."
-        autocomplete="off"
-      >
+    <div class="nav-actions">
+      <button class="btn" id="homeButton">Início</button>
+      <button class="btn" id="favoritesButton">♥ Favoritos</button>
+      <button class="btn primary" id="refreshButton">↻ Atualizar</button>
     </div>
   </div>
-
-  <div class="header-right">
-    <button class="header-btn" onclick="showFavorites()">♥ Favoritos</button>
-  </div>
-
 </header>
 
 <main>
+  <section class="hero" id="home">
+    <div class="eyebrow">🌌 O UNIVERSO DOS JOGOS</div>
+    <h1>Explore. Jogue.<br><span class="gradient-text">Descubra.</span></h1>
+    <p>
+      Descubra projetos incríveis criados pela comunidade Scratch.
+      Encontre jogos, explore novas ideias e conheça criadores.
+    </p>
 
-  <div id="homePage">
-
-    <section class="hero">
-
-      <div class="hero-content">
-
-        <span class="hero-tag">🌌 SEU UNIVERSO DE JOGOS</span>
-
-        <h1>
-          Descubra seu próximo
-          <span>jogo favorito.</span>
-        </h1>
-
-        <p>
-          Explore milhares de projetos da comunidade Scratch.
-          Descubra aventuras, RPGs, jogos de terror, simuladores
-          e muito mais em um só lugar.
-        </p>
-
-        <div class="hero-buttons">
-          <button class="primary-btn" onclick="scrollToGames()">
-            Explorar jogos →
-          </button>
-
-          <button class="secondary-btn" onclick="showFavorites()">
-            ♥ Meus favoritos
-          </button>
-        </div>
-
+    <div class="search-area">
+      <form class="search-box" id="searchForm">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Pesquise Minecraft, terror, aventura..."
+          autocomplete="off"
+        >
+        <button type="submit">Pesquisar</button>
+      </form>
+      <div class="search-hint">
+        Pesquise pelo nome do jogo, gênero ou palavra-chave.
       </div>
+    </div>
 
-    </section>
-
-    <section class="stats">
-
+    <div class="stats">
       <div class="stat">
-        <strong id="gamesCount">0</strong>
-        <span>Jogos carregados</span>
+        <strong id="shownCount">0</strong>
+        <span>Jogos exibidos</span>
       </div>
-
       <div class="stat">
-        <strong id="favoritesCount">0</strong>
-        <span>Seus favoritos</span>
+        <strong>Scratch</strong>
+        <span>Fonte dos projetos</span>
       </div>
-
       <div class="stat">
-        <strong id="historyCount">0</strong>
-        <span>Jogos visitados</span>
+        <strong>∞</strong>
+        <span>Possibilidades</span>
       </div>
-
-    </section>
-
-    <section class="section">
-
-      <div class="section-header">
-        <div>
-          <h2 class="section-title">Explore categorias</h2>
-          <p class="section-subtitle">Escolha seu estilo de jogo.</p>
-        </div>
-      </div>
-
-      <div class="categories">
-
-        <button class="category active" data-query="game">🎮 Todos</button>
-        <button class="category" data-query="horror">👻 Terror</button>
-        <button class="category" data-query="RPG">⚔️ RPG</button>
-        <button class="category" data-query="adventure">🗺️ Aventura</button>
-        <button class="category" data-query="platformer">🏃 Plataforma</button>
-        <button class="category" data-query="Minecraft">⛏️ Minecraft</button>
-        <button class="category" data-query="simulator">🚗 Simuladores</button>
-        <button class="category" data-query="multiplayer">👥 Multiplayer</button>
-        <button class="category" data-query="fighting">🥊 Luta</button>
-        <button class="category" data-query="pokemon">⚡ Pokémon</button>
-
-      </div>
-
-    </section>
-
-    <section class="section" id="gamesSection">
-
-      <div class="section-header">
-        <div>
-          <h2 class="section-title" id="resultsTitle">🔥 Jogos populares</h2>
-          <p class="section-subtitle" id="resultsSubtitle">
-            Projetos encontrados na comunidade Scratch.
-          </p>
-        </div>
-      </div>
-
-      <div class="games-grid" id="gamesGrid">
-        <div class="loading">
-          <div class="spinner"></div>
-          <p>Carregando universo de jogos...</p>
-        </div>
-      </div>
-
-      <button class="load-more hidden" id="loadMore">
-        Carregar mais jogos ↓
-      </button>
-
-    </section>
-
-  </div>
-
-  <section id="otherPage" class="page hidden">
-
-    <button class="back-btn" onclick="showHome()">← Voltar ao início</button>
-
-    <h2 class="section-title" id="otherTitle">Meus jogos</h2>
-
-    <p class="section-subtitle" id="otherSubtitle"></p>
-
-    <div class="games-grid" id="otherGrid"></div>
-
+    </div>
   </section>
 
-  <section id="detailPage" class="page hidden">
+  <section class="section" id="gamesSection">
+    <div class="section-heading">
+      <div>
+        <h2 id="sectionTitle">Jogos em destaque</h2>
+        <p id="sectionSubtitle">Descubra projetos populares da comunidade.</p>
+      </div>
 
-    <button class="back-btn" onclick="showHome()">← Voltar aos jogos</button>
+      <select class="sort-select" id="sortSelect" aria-label="Ordenar jogos">
+        <option value="popular">Mais populares</option>
+        <option value="trending">Em alta</option>
+        <option value="recent">Mais recentes</option>
+      </select>
+    </div>
 
-    <div id="detailContent"></div>
+    <div class="filters" id="filters">
+      <button class="filter active" data-query="">Todos</button>
+      <button class="filter" data-query="minecraft">Minecraft</button>
+      <button class="filter" data-query="horror">Terror</button>
+      <button class="filter" data-query="platformer">Plataforma</button>
+      <button class="filter" data-query="adventure">Aventura</button>
+      <button class="filter" data-query="rpg">RPG</button>
+      <button class="filter" data-query="multiplayer">Multiplayer</button>
+      <button class="filter" data-query="simulator">Simuladores</button>
+    </div>
 
+    <div class="game-grid" id="gameGrid">
+      <div class="status">
+        <div class="spinner"></div>
+        Preparando o universo...
+      </div>
+    </div>
+
+    <div class="load-more-wrap" id="loadMoreWrap" hidden>
+      <button class="btn primary" id="loadMoreButton">Carregar mais jogos</button>
+    </div>
   </section>
-
 </main>
 
 <footer>
   <strong>SCRATCH UNIVERSE</strong><br>
-  Descubra. Explore. Jogue.<br>
   Uma plataforma independente de descoberta de projetos.<br>
-  Scratch é uma marca do MIT. Esta plataforma não é afiliada oficialmente ao Scratch.
+  Os jogos são hospedados no Scratch. Scratch é uma marca do MIT.
 </footer>
 
-<script>
+<div class="modal" id="gameModal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <div class="modal-top">
+      <h2 id="modalTitle">Carregando jogo...</h2>
+      <button class="close-btn" id="closeModal">✕ Fechar</button>
+    </div>
+    <iframe
+      class="player-frame"
+      id="gameFrame"
+      title="Jogo Scratch"
+      allowtransparency="true"
+      allowfullscreen
+      loading="lazy"
+    ></iframe>
+    <div class="modal-info">
+      <div id="modalDescription">Projeto da comunidade Scratch.</div>
+      <div class="modal-buttons">
+        <a class="btn primary" id="openScratch" target="_blank" rel="noopener noreferrer">
+          Abrir no Scratch ↗
+        </a>
+        <button class="btn" id="copyGameLink">Copiar link</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-/* ============================================
-   CONFIGURAÇÕES PRINCIPAIS
-============================================ */
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   CONFIGURAÇÃO
+   A API oficial não deve ser substituída pelo endereço
+   de um proxy. Os proxies são usados separadamente abaixo.
+========================================================= */
 
 const API = "https://api.scratch.mit.edu";
 
-const state = {
-  query: "game",
-  offset: 0,
-  limit: 40,
-  games: [],
-  allGames: [],
-  loading: false,
-  favorites: JSON.parse(localStorage.getItem("su_favorites") || "[]"),
-  history: JSON.parse(localStorage.getItem("su_history") || "[]"),
-  searchTimer: null
+const PROXIES = [
+  url => url,
+  url => "https://api.allorigins.win/raw?url=" + encodeURIComponent(url),
+  url => "https://corsproxy.io/?url=" + encodeURIComponent(url)
+];
+
+const PAGE_SIZE = 24;
+const REQUEST_TIMEOUT = 9000;
+
+/* =========================================================
+   ELEMENTOS
+========================================================= */
+
+const elements = {
+  grid: document.getElementById("gameGrid"),
+  input: document.getElementById("searchInput"),
+  form: document.getElementById("searchForm"),
+  title: document.getElementById("sectionTitle"),
+  subtitle: document.getElementById("sectionSubtitle"),
+  sort: document.getElementById("sortSelect"),
+  shown: document.getElementById("shownCount"),
+  moreWrap: document.getElementById("loadMoreWrap"),
+  moreButton: document.getElementById("loadMoreButton"),
+  modal: document.getElementById("gameModal"),
+  modalTitle: document.getElementById("modalTitle"),
+  modalDescription: document.getElementById("modalDescription"),
+  frame: document.getElementById("gameFrame"),
+  openScratch: document.getElementById("openScratch"),
+  toast: document.getElementById("toast")
 };
 
+/* =========================================================
+   ESTADO
+========================================================= */
 
-/* ============================================
-   ELEMENTOS DO SITE
-============================================ */
+let currentQuery = "";
+let currentMode = "popular";
+let currentOffset = 0;
+let currentGames = [];
+let currentView = "all";
+let requestNumber = 0;
+let activeGame = null;
+let loading = false;
 
-const $ = id => document.getElementById(id);
+let favorites = loadStorage("scratchUniverseFavorites", []);
+let viewedGames = loadStorage("scratchUniverseHistory", []);
 
-const homePage = $("homePage");
-const otherPage = $("otherPage");
-const detailPage = $("detailPage");
-const gamesGrid = $("gamesGrid");
-const searchInput = $("searchInput");
-
-
-/* ============================================
-   FUNÇÕES DE SEGURANÇA
-============================================ */
-
-function escapeHTML(value){
-
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[char]);
-
+function loadStorage(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key));
+    return value ?? fallback;
+  } catch {
+    return fallback;
+  }
 }
 
+function saveStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    showToast("Não foi possível salvar neste navegador.");
+  }
+}
 
-/* ============================================
-   COMUNICAÇÃO COM O SCRATCH
-============================================ */
+/* =========================================================
+   FUNÇÕES GERAIS
+========================================================= */
 
-async function scratchSearch(query, offset = 0){
+function showToast(message) {
+  elements.toast.textContent = message;
+  elements.toast.classList.add("show");
 
-  const url = new URL(API + "/search/projects");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    elements.toast.classList.remove("show");
+  }, 2800);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
+
+function formatNumber(value) {
+  const number = Number(value) || 0;
+  return new Intl.NumberFormat("pt-BR", {
+    notation: number >= 1000 ? "compact" : "standard",
+    maximumFractionDigits: 1
+  }).format(number);
+}
+
+function normalizeProject(project) {
+  if (!project || !project.id) return null;
+
+  return {
+    id: String(project.id),
+    title: project.title || "Projeto sem título",
+    username: project.username || project.author?.username || "Criador Scratch",
+    views: Number(project.stats?.views ?? project.views ?? 0),
+    loves: Number(project.stats?.loves ?? project.loves ?? 0),
+    favorites: Number(project.stats?.favorites ?? project.favorites ?? 0),
+    description: project.description || "",
+    instructions: project.instructions || ""
+  };
+}
+
+function thumbnailURL(id) {
+  return `https://uploads.scratch.mit.edu/get_image/project/${encodeURIComponent(id)}_480x360.png`;
+}
+
+function scratchURL(id) {
+  return `https://scratch.mit.edu/projects/${encodeURIComponent(id)}/`;
+}
+
+/* =========================================================
+   REQUISIÇÃO COM ALTERNATIVAS
+========================================================= */
+
+async function fetchWithTimeout(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      signal: controller.signal,
+      headers: { "Accept": "application/json" }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Servidor respondeu com HTTP ${response.status}`);
+    }
+
+    const text = await response.text();
+
+    if (!text) throw new Error("O servidor retornou uma resposta vazia.");
+
+    let data;
+
+    try {
+      data = JSON.parse(text);
+    } catch {
+      throw new Error("A resposta recebida não é um JSON válido.");
+    }
+
+    return data;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function fetchJSONWithFallback(originalURL) {
+  let lastError = null;
+
+  for (let i = 0; i < PROXIES.length; i++) {
+    const requestURL = PROXIES[i](originalURL);
+
+    try {
+      return await fetchWithTimeout(requestURL);
+    } catch (error) {
+      lastError = error;
+      console.warn(`Tentativa ${i + 1} falhou:`, error.message);
+    }
+  }
+
+  throw new Error(
+    "Não foi possível acessar os servidores do Scratch. " +
+    "Pode ser uma instabilidade da API, bloqueio de conexão ou proxy indisponível. " +
+    "Tente novamente em alguns instantes. Detalhe: " +
+    (lastError?.message || "erro de conexão")
+  );
+}
+
+/* =========================================================
+   BUSCA DE PROJETOS
+========================================================= */
+
+function buildSearchURL(query, mode, offset) {
+  const url = new URL(`${API}/search/projects`);
 
   url.searchParams.set("q", query);
-  url.searchParams.set("limit", state.limit);
-  url.searchParams.set("offset", offset);
-  url.searchParams.set("mode", "popular");
+  url.searchParams.set("mode", mode);
+  url.searchParams.set("limit", String(PAGE_SIZE));
+  url.searchParams.set("offset", String(offset));
 
-  const response = await fetch(url.toString());
-
-  if(!response.ok){
-    throw new Error("O Scratch não respondeu corretamente.");
-  }
-
-  const data = await response.json();
-
-  return data.map(project => ({
-
-    id: project.id,
-
-    title: project.title || "Projeto sem título",
-
-    author: project.author?.username || "Criador desconhecido",
-
-    image:
-      `https://uploads.scratch.mit.edu/get_image/project/${project.id}_480x360.png`,
-
-    views: project.stats?.views ?? 0,
-
-    loves: project.stats?.loves ?? 0,
-
-    favorites: project.stats?.favorites ?? 0,
-
-    description: project.description || "",
-
-    instructions: project.instructions || "",
-
-    url: `https://scratch.mit.edu/projects/${project.id}/`
-
-  }));
-
+  return url.toString();
 }
 
+async function scratchSearch(query, mode, offset) {
+  const url = buildSearchURL(query, mode, offset);
+  const data = await fetchJSONWithFallback(url);
 
-/* ============================================
-   PESQUISA
-============================================ */
-
-async function searchGames(query, reset = true){
-
-  query = query.trim();
-
-  if(!query || state.loading) return;
-
-  if(reset){
-
-    state.query = query;
-    state.offset = 0;
-    state.games = [];
-
-    gamesGrid.innerHTML = `
-      <div class="loading">
-        <div class="spinner"></div>
-        <p>Procurando projetos no Scratch...</p>
-      </div>
-    `;
-
-    $("resultsTitle").textContent = "🔎 Resultados da pesquisa";
-    $("resultsSubtitle").textContent = `Buscando: ${query}`;
-
-    $("loadMore").classList.add("hidden");
-
+  if (!Array.isArray(data)) {
+    throw new Error("A API retornou um formato inesperado.");
   }
 
-  state.loading = true;
-
-  try{
-
-    const results = await scratchSearch(query, state.offset);
-
-    if(reset){
-      state.games = results;
-    }else{
-
-      const existing = new Set(state.games.map(game => String(game.id)));
-
-      const newGames = results.filter(
-        game => !existing.has(String(game.id))
-      );
-
-      state.games.push(...newGames);
-
-    }
-
-    state.offset += results.length;
-
-    state.allGames = state.games;
-
-    renderGames(state.games);
-
-    $("loadMore").classList.toggle(
-      "hidden",
-      results.length < state.limit
-    );
-
-    updateStats();
-
-  }catch(error){
-
-    console.error(error);
-
-    gamesGrid.innerHTML = `
-      <div class="error-state">
-        <h3>Não conseguimos carregar os jogos.</h3>
-        <p>Verifique sua conexão e tente novamente.</p>
-        <button class="primary-btn"
-          style="margin-top:15px"
-          onclick="searchGames(state.query)">
-          Tentar novamente
-        </button>
-      </div>
-    `;
-
-  }finally{
-
-    state.loading = false;
-
-  }
-
+  return data.map(normalizeProject).filter(Boolean);
 }
 
+/* =========================================================
+   ESTADOS VISUAIS
+========================================================= */
 
-/* ============================================
-   CRIAÇÃO DOS CARDS
-============================================ */
-
-function renderGames(games, container = gamesGrid){
-
-  if(!games || games.length === 0){
-
-    container.innerHTML = `
-      <div class="empty-state">
-        <h3>Nenhum jogo encontrado.</h3>
-        <p>Tente pesquisar outro nome.</p>
-      </div>
-    `;
-
-    return;
-
-  }
-
-  container.innerHTML = games.map(game => {
-
-    const favorite = state.favorites.some(
-      item => String(item.id) === String(game.id)
-    );
-
-    return `
-
-      <article class="game-card">
-
-        <div class="game-image"
-          onclick="openGame('${game.id}')"
-          style="cursor:pointer">
-
-          <img
-            src="${escapeHTML(game.image)}"
-            alt="${escapeHTML(game.title)}"
-            loading="lazy"
-            onerror="this.style.opacity='.25'"
-          >
-
-          <button
-            class="favorite-btn ${favorite ? "selected" : ""}"
-            onclick="event.stopPropagation();toggleFavorite('${game.id}')"
-            title="Adicionar aos favoritos">
-
-            ${favorite ? "♥" : "♡"}
-
-          </button>
-
-        </div>
-
-        <div class="game-info">
-
-          <h3 title="${escapeHTML(game.title)}">
-            ${escapeHTML(game.title)}
-          </h3>
-
-          <p>👤 ${escapeHTML(game.author)}</p>
-
-          <div class="game-meta">
-            <span>❤️ ${Number(game.loves).toLocaleString("pt-BR")}</span>
-            <span>👁 ${Number(game.views).toLocaleString("pt-BR")}</span>
-          </div>
-
-          <button
-            class="game-open"
-            onclick="openGame('${game.id}')">
-            VER JOGO →
-          </button>
-
-        </div>
-
-      </article>
-
-    `;
-
-  }).join("");
-
-}
-
-
-/* ============================================
-   ABRIR DETALHES DO JOGO
-============================================ */
-
-async function openGame(id){
-
-  let game = state.games.find(
-    item => String(item.id) === String(id)
-  );
-
-  if(!game){
-    game = state.favorites.find(
-      item => String(item.id) === String(id)
-    );
-  }
-
-  if(!game) return;
-
-  state.history = [
-    game,
-    ...state.history.filter(
-      item => String(item.id) !== String(id)
-    )
-  ].slice(0,30);
-
-  localStorage.setItem("su_history",JSON.stringify(state.history));
-
-  updateStats();
-
-  homePage.classList.add("hidden");
-  otherPage.classList.add("hidden");
-  detailPage.classList.remove("hidden");
-
-  window.scrollTo(0,0);
-
-  $("detailContent").innerHTML = `
-    <div class="loading">
+function showLoading(message = "Buscando projetos no Scratch...") {
+  elements.grid.innerHTML = `
+    <div class="status">
       <div class="spinner"></div>
-      <p>Carregando detalhes do jogo...</p>
+      ${escapeHTML(message)}
+    </div>
+  `;
+}
+
+function showError(error) {
+  elements.grid.innerHTML = `
+    <div class="status">
+      <div style="font-size:38px;margin-bottom:12px">⚠️</div>
+      <div class="error-title">Não conseguimos carregar os jogos.</div>
+      <p>${escapeHTML(error.message || error)}</p>
+      <button class="btn primary" id="retryButton">Tentar novamente</button>
     </div>
   `;
 
-  let description = game.description || "Descrição não disponível.";
+  document.getElementById("retryButton").addEventListener("click", () => {
+    startSearch(currentQuery, currentMode);
+  });
+}
 
-  let instructions = game.instructions || "Instruções não disponíveis.";
+/* =========================================================
+   RENDERIZAÇÃO DOS CARDS
+========================================================= */
 
-  try{
+function createGameCard(game) {
+  const isFavorite = favorites.some(item => String(item.id) === String(game.id));
 
-    const response = await fetch(
-      `${API}/projects/${id}`
-    );
-
-    if(response.ok){
-
-      const data = await response.json();
-
-      description = data.description || description;
-      instructions = data.instructions || instructions;
-
-    }
-
-  }catch(error){
-
-    console.log("Não foi possível carregar informações adicionais.");
-
-  }
-
-  const favorite = state.favorites.some(
-    item => String(item.id) === String(game.id)
-  );
-
-  $("detailContent").innerHTML = `
-
-    <div class="game-detail">
-
-      <img src="${escapeHTML(game.image)}"
-        alt="${escapeHTML(game.title)}">
-
-      <h1 class="detail-title">${escapeHTML(game.title)}</h1>
-
-      <p style="color:var(--muted)">
-        Criado por ${escapeHTML(game.author)}
-      </p>
-
-      <div class="detail-actions">
-
-        <a class="primary-btn"
-          href="${game.url}"
-          target="_blank"
-          rel="noopener noreferrer">
-          JOGAR NO SCRATCH ↗
-        </a>
-
-        <button class="secondary-btn"
-          onclick="toggleFavorite('${game.id}');openGame('${game.id}')">
-          ${favorite ? "♥ Remover favorito" : "♡ Adicionar favorito"}
-        </button>
-
+  return `
+    <article class="game-card" data-id="${escapeHTML(game.id)}">
+      <div class="thumb-wrap">
+        <img
+          class="thumb"
+          src="${thumbnailURL(game.id)}"
+          alt="Capa de ${escapeHTML(game.title)}"
+          loading="lazy"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
+        >
+        <div class="thumb-fallback" style="display:none">🎮</div>
+        <span class="card-badge">SCRATCH</span>
+        <button
+          class="favorite-btn ${isFavorite ? "saved" : ""}"
+          data-favorite="${escapeHTML(game.id)}"
+          aria-label="Adicionar aos favoritos"
+          title="Favoritar"
+        >${isFavorite ? "♥" : "♡"}</button>
       </div>
 
-      <h3 style="margin-top:30px">Sobre este jogo</h3>
+      <div class="card-content">
+        <div class="game-title" title="${escapeHTML(game.title)}">
+          ${escapeHTML(game.title)}
+        </div>
 
-      <p class="detail-description">
-        ${escapeHTML(description)}
-      </p>
+        <div class="creator">
+          Criado por @${escapeHTML(game.username)}
+        </div>
 
-      <h3>Como jogar</h3>
+        <div class="card-stats">
+          <span>👁 ${formatNumber(game.views)}</span>
+          <span>❤️ ${formatNumber(game.loves)}</span>
+          <span>⭐ ${formatNumber(game.favorites)}</span>
+        </div>
 
-      <p class="detail-description">
-        ${escapeHTML(instructions)}
-      </p>
-
-      <h3 style="margin-top:30px">Experimente aqui</h3>
-
-      <iframe
-        class="player-frame"
-        src="https://scratch.mit.edu/projects/${encodeURIComponent(id)}/embed"
-        allowtransparency="true"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
-
-      <p class="detail-description">
-        Se o jogador incorporado não funcionar, utilize o botão
-        JOGAR NO SCRATCH para abrir o projeto diretamente.
-      </p>
-
-    </div>
-
+        <div class="card-actions">
+          <button class="play-btn" data-play="${escapeHTML(game.id)}">
+            ▶ Jogar
+          </button>
+          <button class="details-btn" data-details="${escapeHTML(game.id)}">
+            Detalhes
+          </button>
+        </div>
+      </div>
+    </article>
   `;
-
 }
 
+function renderGames(games, append = false) {
+  if (!append) elements.grid.innerHTML = "";
 
-/* ============================================
-   FAVORITOS
-============================================ */
-
-function toggleFavorite(id){
-
-  let game = state.games.find(
-    item => String(item.id) === String(id)
-  );
-
-  if(!game){
-    game = state.favorites.find(
-      item => String(item.id) === String(id)
+  if (!games.length && !append) {
+    elements.grid.innerHTML = `
+      <div class="status">
+        <div style="font-size:38px">🔎</div>
+        <h3>Nenhum projeto encontrado</h3>
+        <p>Tente outra palavra ou escolha uma categoria diferente.</p>
+      </div>
+    `;
+  } else {
+    elements.grid.insertAdjacentHTML(
+      "beforeend",
+      games.map(createGameCard).join("")
     );
   }
 
-  if(!game) return;
-
-  const index = state.favorites.findIndex(
-    item => String(item.id) === String(id)
-  );
-
-  if(index >= 0){
-
-    state.favorites.splice(index,1);
-
-  }else{
-
-    state.favorites.unshift(game);
-
-  }
-
-  localStorage.setItem(
-    "su_favorites",
-    JSON.stringify(state.favorites)
-  );
-
-  updateStats();
-
-  if(!homePage.classList.contains("hidden")){
-    renderGames(state.games);
-  }
-
+  elements.shown.textContent = String(currentGames.length);
+  elements.moreWrap.hidden = games.length < PAGE_SIZE;
 }
 
+/* =========================================================
+   CONTROLE DE PESQUISA
+========================================================= */
 
-/* ============================================
-   PÁGINA DE FAVORITOS
-============================================ */
+async function startSearch(query = "", mode = "popular") {
+  const thisRequest = ++requestNumber;
 
-function showFavorites(){
+  currentQuery = query.trim();
+  currentMode = mode;
+  currentOffset = 0;
+  currentGames = [];
+  currentView = "all";
+  loading = true;
 
-  homePage.classList.add("hidden");
-  detailPage.classList.add("hidden");
-  otherPage.classList.remove("hidden");
-
-  $("otherTitle").textContent = "♥ Meus favoritos";
-
-  $("otherSubtitle").textContent =
-    `${state.favorites.length} jogos salvos`;
-
-  renderGames(state.favorites,$("otherGrid"));
-
-  window.scrollTo(0,0);
-
-}
-
-
-/* ============================================
-   HISTÓRICO
-============================================ */
-
-function showHistory(){
-
-  homePage.classList.add("hidden");
-  detailPage.classList.add("hidden");
-  otherPage.classList.remove("hidden");
-
-  $("otherTitle").textContent = "🕘 Histórico";
-
-  $("otherSubtitle").textContent =
-    `${state.history.length} jogos visitados`;
-
-  renderGames(state.history,$("otherGrid"));
-
-  window.scrollTo(0,0);
-
-}
-
-
-/* ============================================
-   VOLTAR AO INÍCIO
-============================================ */
-
-function showHome(){
-
-  otherPage.classList.add("hidden");
-  detailPage.classList.add("hidden");
-  homePage.classList.remove("hidden");
-
-  window.scrollTo(0,0);
-
-  if(state.games.length === 0){
-    searchGames("game");
-  }
-
-}
-
-
-/* ============================================
-   CATEGORIAS
-============================================ */
-
-document.querySelectorAll(".category").forEach(button => {
-
-  button.addEventListener("click",() => {
-
-    document.querySelectorAll(".category").forEach(item => {
-      item.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    searchInput.value = "";
-
-    showHome();
-
-    searchGames(button.dataset.query);
-
-    scrollToGames();
-
+  document.querySelectorAll(".filter").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.query === currentQuery
+    );
   });
 
-});
+  elements.sort.value = mode;
+  elements.input.value = currentQuery;
 
+  elements.title.textContent = currentQuery
+    ? `Resultados para "${currentQuery}"`
+    : "Jogos em destaque";
 
-/* ============================================
-   CAMPO DE PESQUISA
-============================================ */
+  elements.subtitle.textContent = "Projetos encontrados na comunidade Scratch.";
 
-searchInput.addEventListener("input",() => {
+  elements.moreWrap.hidden = true;
+  showLoading();
 
-  clearTimeout(state.searchTimer);
+  try {
+    const games = await scratchSearch(currentQuery, currentMode, 0);
 
-  const query = searchInput.value.trim();
+    if (thisRequest !== requestNumber) return;
 
-  if(query.length < 2) return;
+    currentGames = games;
+    currentOffset = games.length;
 
-  state.searchTimer = setTimeout(() => {
+    renderGames(games);
 
-    document.querySelectorAll(".category").forEach(item => {
-      item.classList.remove("active");
-    });
-
-    showHome();
-
-    searchGames(query);
-
-  },500);
-
-});
-
-searchInput.addEventListener("keydown",event => {
-
-  if(event.key === "Enter"){
-
-    clearTimeout(state.searchTimer);
-
-    const query = searchInput.value.trim();
-
-    if(query.length >= 2){
-
-      showHome();
-      searchGames(query);
-
+    if (games.length === 0) {
+      elements.subtitle.textContent = "Não encontramos projetos com esse termo.";
     }
+  } catch (error) {
+    if (thisRequest !== requestNumber) return;
+    showError(error);
+  } finally {
+    if (thisRequest === requestNumber) loading = false;
+  }
+}
 
+async function loadMore() {
+  if (loading || currentView !== "all") return;
+
+  loading = true;
+  elements.moreButton.textContent = "Carregando...";
+  elements.moreButton.disabled = true;
+
+  const thisRequest = requestNumber;
+
+  try {
+    const games = await scratchSearch(
+      currentQuery,
+      currentMode,
+      currentOffset
+    );
+
+    if (thisRequest !== requestNumber) return;
+
+    const existingIds = new Set(currentGames.map(game => game.id));
+    const uniqueGames = games.filter(game => !existingIds.has(game.id));
+
+    currentGames = currentGames.concat(uniqueGames);
+    currentOffset += games.length;
+
+    renderGames(uniqueGames, true);
+
+    if (games.length === 0) {
+      elements.moreWrap.hidden = true;
+      showToast("Você chegou ao fim dos resultados disponíveis.");
+    }
+  } catch (error) {
+    showToast(error.message);
+  } finally {
+    loading = false;
+    elements.moreButton.textContent = "Carregar mais jogos";
+    elements.moreButton.disabled = false;
+  }
+}
+
+/* =========================================================
+   FAVORITOS
+========================================================= */
+
+function toggleFavorite(id) {
+  const game = currentGames.find(item => item.id === String(id))
+    || favorites.find(item => item.id === String(id));
+
+  if (!game) return;
+
+  const index = favorites.findIndex(item => item.id === String(id));
+
+  if (index >= 0) {
+    favorites.splice(index, 1);
+    showToast("Jogo removido dos favoritos.");
+  } else {
+    favorites.push(game);
+    showToast("Jogo adicionado aos favoritos!");
   }
 
-});
+  saveStorage("scratchUniverseFavorites", favorites);
 
+  if (currentView === "favorites") {
+    showFavorites();
+  } else {
+    renderGames(currentGames);
+  }
+}
 
-/* ============================================
-   CARREGAR MAIS
-============================================ */
+function showFavorites() {
+  currentView = "favorites";
+  elements.title.textContent = "Seus favoritos";
+  elements.subtitle.textContent = "Os projetos que você salvou neste navegador.";
+  elements.moreWrap.hidden = true;
 
-$("loadMore").addEventListener("click",() => {
-
-  searchGames(state.query,false);
-
-});
-
-
-/* ============================================
-   NAVEGAÇÃO
-============================================ */
-
-function scrollToGames(){
-
-  $("gamesSection").scrollIntoView({
-    behavior:"smooth"
+  document.querySelectorAll(".filter").forEach(button => {
+    button.classList.remove("active");
   });
 
+  currentGames = [...favorites];
+  renderGames(currentGames);
 }
 
+/* =========================================================
+   HISTÓRICO
+========================================================= */
 
-/* ============================================
-   ESTATÍSTICAS
-============================================ */
-
-function updateStats(){
-
-  $("gamesCount").textContent =
-    state.games.length.toLocaleString("pt-BR");
-
-  $("favoritesCount").textContent =
-    state.favorites.length.toLocaleString("pt-BR");
-
-  $("historyCount").textContent =
-    state.history.length.toLocaleString("pt-BR");
-
+function addToHistory(game) {
+  viewedGames = viewedGames.filter(item => item.id !== game.id);
+  viewedGames.unshift(game);
+  viewedGames = viewedGames.slice(0, 30);
+  saveStorage("scratchUniverseHistory", viewedGames);
 }
 
+/* =========================================================
+   ABRIR JOGO E DETALHES
+========================================================= */
 
-/* ============================================
+async function openGame(id) {
+  const game = currentGames.find(item => item.id === String(id))
+    || favorites.find(item => item.id === String(id))
+    || viewedGames.find(item => item.id === String(id));
+
+  if (!game) {
+    showToast("Não encontramos os dados desse projeto.");
+    return;
+  }
+
+  activeGame = game;
+  addToHistory(game);
+
+  elements.modalTitle.textContent = game.title;
+  elements.modalDescription.textContent = "Carregando informações do projeto...";
+  elements.frame.src = `https://scratch.mit.edu/projects/${encodeURIComponent(game.id)}/embed`;
+  elements.openScratch.href = scratchURL(game.id);
+
+  elements.modal.classList.add("show");
+  document.body.style.overflow = "hidden";
+
+  const originalURL = `${API}/projects/${encodeURIComponent(game.id)}`;
+
+  try {
+    const details = await fetchJSONWithFallback(originalURL);
+
+    if (!activeGame || activeGame.id !== game.id) return;
+
+    const description = details.description || game.description || "";
+    const instructions = details.instructions || game.instructions || "";
+
+    elements.modalDescription.textContent =
+      description || instructions || "Projeto criado pela comunidade Scratch.";
+  } catch (error) {
+    elements.modalDescription.textContent =
+      game.description || "Projeto da comunidade Scratch. Você também pode abri-lo diretamente no Scratch.";
+  }
+}
+
+function closeGame() {
+  elements.modal.classList.remove("show");
+  elements.frame.src = "about:blank";
+  document.body.style.overflow = "";
+  activeGame = null;
+}
+
+/* =========================================================
+   EVENTOS
+========================================================= */
+
+elements.form.addEventListener("submit", event => {
+  event.preventDefault();
+  startSearch(elements.input.value, elements.sort.value);
+});
+
+elements.sort.addEventListener("change", () => {
+  startSearch(currentQuery, elements.sort.value);
+});
+
+document.getElementById("filters").addEventListener("click", event => {
+  const button = event.target.closest("[data-query]");
+  if (!button) return;
+
+  startSearch(button.dataset.query, elements.sort.value);
+});
+
+elements.grid.addEventListener("click", event => {
+  const favoriteButton = event.target.closest("[data-favorite]");
+  const playButton = event.target.closest("[data-play]");
+  const detailsButton = event.target.closest("[data-details]");
+
+  if (favoriteButton) {
+    toggleFavorite(favoriteButton.dataset.favorite);
+    return;
+  }
+
+  if (playButton) {
+    openGame(playButton.dataset.play);
+    return;
+  }
+
+  if (detailsButton) {
+    openGame(detailsButton.dataset.details);
+  }
+});
+
+elements.moreButton.addEventListener("click", loadMore);
+
+document.getElementById("favoritesButton").addEventListener("click", showFavorites);
+
+document.getElementById("homeButton").addEventListener("click", () => {
+  document.getElementById("home").scrollIntoView({ behavior: "smooth" });
+  startSearch("", "popular");
+});
+
+document.getElementById("refreshButton").addEventListener("click", () => {
+  if (currentView === "favorites") {
+    showFavorites();
+  } else {
+    startSearch(currentQuery, currentMode);
+  }
+});
+
+document.getElementById("closeModal").addEventListener("click", closeGame);
+
+elements.modal.addEventListener("click", event => {
+  if (event.target === elements.modal) closeGame();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeGame();
+});
+
+document.getElementById("copyGameLink").addEventListener("click", async () => {
+  if (!activeGame) return;
+
+  const link = scratchURL(activeGame.id);
+
+  try {
+    await navigator.clipboard.writeText(link);
+    showToast("Link copiado!");
+  } catch {
+    showToast("Não foi possível copiar automaticamente. Use o botão Abrir no Scratch.");
+  }
+});
+
+/* =========================================================
    INICIALIZAÇÃO
-============================================ */
+========================================================= */
 
-function initializeUniverse(){
-
-  updateStats();
-
-  searchGames("game");
-
-}
-
-initializeUniverse();
+startSearch("", "popular");
 
 </script>
-
 </body>
 </html>
-
-
