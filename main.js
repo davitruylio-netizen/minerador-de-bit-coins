@@ -1,32 +1,21 @@
 
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js";
 
-/* =========================================================
-   SKYFORGE FLIGHT
-   MOTOR 3D, AERONAVE, AEROPORTO E FÍSICA DE VOO
-========================================================= */
+/* ==========================================================
+   SKYFORGE FLIGHT - FLIGHT ENGINE
+   Versão: High Performance Flight
+========================================================== */
 
 const $ = id => document.getElementById(id);
+const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+const lerp = (a, b, t) => a + (b - a) * clamp(t, 0, 1);
+const random = (min, max) => min + Math.random() * (max - min);
 
 const sceneContainer = $("flightScene");
 
-const clamp = (value, min, max) =>
-    Math.max(min, Math.min(max, value));
-
-const lerp = (a, b, t) =>
-    a + (b - a) * clamp(t, 0, 1);
-
-const random = (min, max) =>
-    min + Math.random() * (max - min);
-
-
-/* =========================================================
-   ESTADO DO SIMULADOR
-========================================================= */
-
 const flight = {
-    speed: 0,
-    throttle: 0.72,
+    speed: 50,              // 180 km/h iniciais
+    throttle: 1,
 
     altitude: 0,
     verticalSpeed: 0,
@@ -56,25 +45,18 @@ const touch = {
 let scene;
 let camera;
 let renderer;
-
 let aircraft;
-let aircraftGroup;
-
 let clock = new THREE.Clock();
 
-let runwayLights = [];
-let clouds = [];
 let engineFans = [];
-
+let clouds = [];
 let cameraTarget = new THREE.Vector3();
-let cameraPosition = new THREE.Vector3();
 
 const WORLD_UP = new THREE.Vector3(0, 1, 0);
 
-
-/* =========================================================
+/* ==========================================================
    MATERIAIS
-========================================================= */
+========================================================== */
 
 const materials = {
     grass: new THREE.MeshStandardMaterial({
@@ -127,14 +109,12 @@ const materials = {
     })
 };
 
-
-/* =========================================================
+/* ==========================================================
    INICIALIZAÇÃO
-========================================================= */
+========================================================== */
 
 function initialize() {
 
-    // Remove qualquer carregamento antigo.
     $("loading")?.remove();
 
     if (!sceneContainer) {
@@ -150,22 +130,18 @@ function initialize() {
     scene.add(aircraft);
 
     createClouds();
-
     createRenderer();
     createEvents();
 
     updateHUD();
     animate();
 
-    setStatus("AERONAVE PRONTA PARA OPERAÇÃO");
-
-    console.log("SKYFORGE FLIGHT inicializado.");
+    setStatus("AERONAVE PRONTA — POTÊNCIA MÁXIMA");
 }
 
-
-/* =========================================================
+/* ==========================================================
    CENA
-========================================================= */
+========================================================== */
 
 function createScene() {
 
@@ -182,27 +158,25 @@ function createScene() {
         65,
         window.innerWidth / window.innerHeight,
         0.1,
-        10000
+        12000
     );
 
     camera.position.set(0, 13, 320);
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    ILUMINAÇÃO
-========================================================= */
+========================================================== */
 
 function createLighting() {
 
-    const hemisphere = new THREE.HemisphereLight(
-        0xd8efff,
-        0x536344,
-        2.0
+    scene.add(
+        new THREE.HemisphereLight(
+            0xd8efff,
+            0x536344,
+            2
+        )
     );
-
-    scene.add(hemisphere);
 
     const sunlight = new THREE.DirectionalLight(
         0xfff2d7,
@@ -210,7 +184,6 @@ function createLighting() {
     );
 
     sunlight.position.set(-450, 750, 350);
-
     sunlight.castShadow = true;
 
     sunlight.shadow.mapSize.set(2048, 2048);
@@ -220,8 +193,6 @@ function createLighting() {
     sunlight.shadow.camera.top = 700;
     sunlight.shadow.camera.bottom = -700;
 
-    sunlight.shadow.bias = -0.00015;
-
     scene.add(sunlight);
 
     const fill = new THREE.DirectionalLight(
@@ -230,15 +201,12 @@ function createLighting() {
     );
 
     fill.position.set(400, 200, -400);
-
     scene.add(fill);
-
 }
 
-
-/* =========================================================
-   FUNÇÕES DE GEOMETRIA
-========================================================= */
+/* ==========================================================
+   GEOMETRIA
+========================================================== */
 
 function box(parent, width, height, depth, material, x, y, z) {
 
@@ -248,7 +216,6 @@ function box(parent, width, height, depth, material, x, y, z) {
     );
 
     mesh.position.set(x, y, z);
-
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
@@ -256,7 +223,6 @@ function box(parent, width, height, depth, material, x, y, z) {
 
     return mesh;
 }
-
 
 function cylinder(parent, radiusTop, radiusBottom, length, material, x, y, z, rotationX = 0) {
 
@@ -272,7 +238,6 @@ function cylinder(parent, radiusTop, radiusBottom, length, material, x, y, z, ro
 
     mesh.position.set(x, y, z);
     mesh.rotation.x = rotationX;
-
     mesh.castShadow = true;
     mesh.receiveShadow = true;
 
@@ -280,7 +245,6 @@ function cylinder(parent, radiusTop, radiusBottom, length, material, x, y, z, ro
 
     return mesh;
 }
-
 
 function sphere(parent, radius, material, x, y, z) {
 
@@ -297,10 +261,9 @@ function sphere(parent, radius, material, x, y, z) {
     return mesh;
 }
 
-
-/* =========================================================
+/* ==========================================================
    MUNDO
-========================================================= */
+========================================================== */
 
 function createWorld() {
 
@@ -311,12 +274,10 @@ function createWorld() {
 
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -1;
-
     ground.receiveShadow = true;
 
     scene.add(ground);
 
-    // Água distante.
     const water = new THREE.Mesh(
         new THREE.PlaneGeometry(10000, 1500),
         new THREE.MeshStandardMaterial({
@@ -333,29 +294,18 @@ function createWorld() {
 
     createMountains();
     createTrees();
-
 }
-
-
-/* =========================================================
-   MONTANHAS
-========================================================= */
 
 function createMountains() {
 
     for (let i = 0; i < 38; i++) {
 
         const side = i % 2 === 0 ? -1 : 1;
-
         const height = random(100, 380);
         const radius = random(100, 280);
 
         const mountain = new THREE.Mesh(
-            new THREE.ConeGeometry(
-                radius,
-                height,
-                7
-            ),
+            new THREE.ConeGeometry(radius, height, 7),
             new THREE.MeshStandardMaterial({
                 color: new THREE.Color().setHSL(
                     random(0.24, 0.31),
@@ -376,15 +326,8 @@ function createMountains() {
         mountain.receiveShadow = true;
 
         scene.add(mountain);
-
     }
-
 }
-
-
-/* =========================================================
-   ÁRVORES
-========================================================= */
 
 function createTrees() {
 
@@ -427,27 +370,17 @@ function createTrees() {
 
         tree.scale.setScalar(random(0.7, 1.5));
 
-        tree.traverse(obj => {
-            if (obj.isMesh) {
-                obj.castShadow = true;
-            }
-        });
-
         scene.add(tree);
-
     }
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    AEROPORTO
-========================================================= */
+========================================================== */
 
 function createAirport() {
 
-    // Pista principal.
-    const runway = box(
+    box(
         scene,
         85,
         0.5,
@@ -458,13 +391,9 @@ function createAirport() {
         -550
     );
 
-    runway.receiveShadow = true;
-
-    // Faixas laterais.
     box(scene, 3, 0.08, 2100, materials.white, -43, 0.3, -550);
     box(scene, 3, 0.08, 2100, materials.white, 43, 0.3, -550);
 
-    // Marcas centrais.
     for (let i = 0; i < 65; i++) {
 
         box(
@@ -477,30 +406,8 @@ function createAirport() {
             0.34,
             470 - i * 31
         );
-
     }
 
-    // Números e marcações da cabeceira.
-    for (let side of [-1, 1]) {
-
-        for (let i = 0; i < 6; i++) {
-
-            box(
-                scene,
-                2.5,
-                0.1,
-                32,
-                materials.white,
-                side * (8 + i * 4),
-                0.35,
-                450
-            );
-
-        }
-
-    }
-
-    // Taxiway.
     box(
         scene,
         35,
@@ -512,7 +419,6 @@ function createAirport() {
         -220
     );
 
-    // Pátio.
     box(
         scene,
         360,
@@ -524,7 +430,6 @@ function createAirport() {
         -30
     );
 
-    // Linhas de estacionamento.
     for (let i = 0; i < 5; i++) {
 
         box(
@@ -537,19 +442,12 @@ function createAirport() {
             0.3,
             -30
         );
-
     }
 
     createRunwayLights();
     createTerminal();
     createHangars();
-
 }
-
-
-/* =========================================================
-   ILUMINAÇÃO DA PISTA
-========================================================= */
 
 function createRunwayLights() {
 
@@ -565,7 +463,7 @@ function createRunwayLights() {
 
         for (let side of [-1, 1]) {
 
-            const light = sphere(
+            sphere(
                 scene,
                 0.8,
                 lightMaterial,
@@ -573,11 +471,7 @@ function createRunwayLights() {
                 1,
                 z
             );
-
-            runwayLights.push(light);
-
         }
-
     }
 
     for (let side of [-1, 1]) {
@@ -592,17 +486,9 @@ function createRunwayLights() {
                 1,
                 -1590
             );
-
         }
-
     }
-
 }
-
-
-/* =========================================================
-   TERMINAL
-========================================================= */
 
 function createTerminal() {
 
@@ -652,10 +538,8 @@ function createTerminal() {
             11,
             81.9
         );
-
     }
 
-    // Torre de controle.
     box(
         scene,
         9,
@@ -688,13 +572,7 @@ function createTerminal() {
         48,
         60
     );
-
 }
-
-
-/* =========================================================
-   HANGARES
-========================================================= */
 
 function createHangars() {
 
@@ -734,15 +612,12 @@ function createHangars() {
             12,
             -60.5
         );
-
     }
-
 }
 
-
-/* =========================================================
-   CONSTRUÇÃO DA AERONAVE
-========================================================= */
+/* ==========================================================
+   AERONAVE
+========================================================== */
 
 function createAircraft() {
 
@@ -769,7 +644,6 @@ function createAircraft() {
         clearcoat: 1
     });
 
-    // Fuselagem principal.
     cylinder(
         plane,
         1.6,
@@ -782,7 +656,6 @@ function createAircraft() {
         Math.PI / 2
     );
 
-    // Nariz arredondado.
     const nose = new THREE.Mesh(
         new THREE.SphereGeometry(1.6, 24, 16),
         whitePaint
@@ -793,7 +666,6 @@ function createAircraft() {
 
     plane.add(nose);
 
-    // Cauda traseira.
     const tailCap = sphere(
         plane,
         1.4,
@@ -805,8 +677,7 @@ function createAircraft() {
 
     tailCap.scale.z = 1.8;
 
-    // Asa principal.
-    const wing = box(
+    box(
         plane,
         44,
         0.45,
@@ -817,13 +688,9 @@ function createAircraft() {
         -1
     );
 
-    wing.rotation.z = 0;
-
-    // Ponta das asas.
     box(plane, 3, 2, 7, bluePaint, -23, 0.8, -1);
     box(plane, 3, 2, 7, bluePaint, 23, 0.8, -1);
 
-    // Estabilizador horizontal.
     box(
         plane,
         15,
@@ -835,7 +702,6 @@ function createAircraft() {
         12
     );
 
-    // Estabilizador vertical.
     box(
         plane,
         0.5,
@@ -847,7 +713,6 @@ function createAircraft() {
         11
     );
 
-    // Cockpit.
     const cockpit = new THREE.Mesh(
         new THREE.SphereGeometry(1, 16, 12),
         glass
@@ -858,7 +723,6 @@ function createAircraft() {
 
     plane.add(cockpit);
 
-    // Janelas laterais.
     for (let side of [-1, 1]) {
 
         for (let i = 0; i < 18; i++) {
@@ -875,12 +739,9 @@ function createAircraft() {
             );
 
             window.rotation.y = side * Math.PI / 2;
-
         }
-
     }
 
-    // Faixa decorativa.
     box(
         plane,
         0.06,
@@ -927,7 +788,6 @@ function createAircraft() {
             Math.PI / 2
         );
 
-        // Entrada da turbina.
         const fan = new THREE.Group();
 
         fan.position.z = -3.8;
@@ -958,15 +818,12 @@ function createAircraft() {
             );
 
             blade.rotation.z = i * Math.PI / 4;
-
         }
 
         engine.add(fan);
-
         engineFans.push(fan);
 
         plane.add(engine);
-
     }
 
     // Trem de pouso.
@@ -998,10 +855,8 @@ function createAircraft() {
         wheel.position.set(side * 5, -3, 2);
 
         plane.add(wheel);
-
     }
 
-    // Roda dianteira.
     cylinder(
         plane,
         0.1,
@@ -1028,7 +883,6 @@ function createAircraft() {
 
     plane.add(frontWheel);
 
-    // Luzes das asas.
     const redLight = new THREE.PointLight(0xff2222, 3, 25);
     redLight.position.set(-23, 0, -1);
     plane.add(redLight);
@@ -1040,13 +894,11 @@ function createAircraft() {
     plane.rotation.order = "YXZ";
 
     return plane;
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    NUVENS
-========================================================= */
+========================================================== */
 
 function createClouds() {
 
@@ -1083,7 +935,6 @@ function createClouds() {
             puff.scale.y = random(0.45, 0.8);
 
             cloud.add(puff);
-
         }
 
         cloud.position.set(
@@ -1093,17 +944,13 @@ function createClouds() {
         );
 
         clouds.push(cloud);
-
         scene.add(cloud);
-
     }
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    RENDERIZADOR
-========================================================= */
+========================================================== */
 
 function createRenderer() {
 
@@ -1130,13 +977,11 @@ function createRenderer() {
     renderer.toneMappingExposure = 1.1;
 
     sceneContainer.appendChild(renderer.domElement);
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    CONTROLES
-========================================================= */
+========================================================== */
 
 function createEvents() {
 
@@ -1154,7 +999,6 @@ function createEvents() {
         if (event.key === "Escape") {
             toggleMenu();
         }
-
     });
 
     window.addEventListener("keyup", event => {
@@ -1162,6 +1006,7 @@ function createEvents() {
     });
 
     window.addEventListener("blur", () => {
+
         keys.clear();
 
         for (const key in touch) {
@@ -1190,9 +1035,7 @@ function createEvents() {
     });
 
     window.addEventListener("resize", resize);
-
 }
-
 
 function bindTouch(id, key) {
 
@@ -1217,36 +1060,31 @@ function bindTouch(id, key) {
     button.addEventListener("contextmenu", event => {
         event.preventDefault();
     });
-
 }
-
 
 function input(touchKey, keyList) {
 
     return touch[touchKey] ||
         keyList.some(key => keys.has(key));
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    INICIAR / PAUSAR
-========================================================= */
+========================================================== */
 
 function startFlight() {
 
     flight.started = true;
     flight.paused = false;
 
-    flight.throttle = 0.75;
+    flight.speed = 50;
+    flight.throttle = 1;
 
-    $("startScreen").classList.add("hidden");
-    $("flightMenu").classList.add("hidden");
+    $("startScreen")?.classList.add("hidden");
+    $("flightMenu")?.classList.add("hidden");
 
-    setStatus("MOTORES ATIVOS — ACELERE PARA DECOLAR");
-
+    setStatus("MOTORES ATIVOS — 180 KM/H INICIAIS");
 }
-
 
 function toggleMenu() {
 
@@ -1254,7 +1092,7 @@ function toggleMenu() {
 
     flight.paused = !flight.paused;
 
-    $("flightMenu").classList.toggle(
+    $("flightMenu")?.classList.toggle(
         "hidden",
         !flight.paused
     );
@@ -1264,28 +1102,24 @@ function toggleMenu() {
             ? "VOO PAUSADO"
             : "VOO EM ANDAMENTO"
     );
-
 }
-
 
 function resumeFlight() {
 
     flight.paused = false;
 
-    $("flightMenu").classList.add("hidden");
+    $("flightMenu")?.classList.add("hidden");
 
     setStatus("VOO RETOMADO");
-
 }
-
 
 function returnToHangar() {
 
     flight.started = false;
     flight.paused = false;
 
-    flight.speed = 0;
-    flight.throttle = 0.72;
+    flight.speed = 50;
+    flight.throttle = 1;
 
     flight.altitude = 0;
     flight.verticalSpeed = 0;
@@ -1299,17 +1133,15 @@ function returnToHangar() {
     aircraft.position.set(0, 3, 250);
     aircraft.rotation.set(0, 0, 0);
 
-    $("flightMenu").classList.add("hidden");
-    $("startScreen").classList.remove("hidden");
+    $("flightMenu")?.classList.add("hidden");
+    $("startScreen")?.classList.remove("hidden");
 
     setStatus("AERONAVE NO PÁTIO");
-
 }
 
-
-/* =========================================================
-   FÍSICA E MOVIMENTO
-========================================================= */
+/* ==========================================================
+   FÍSICA DE VOO — ACELERAÇÃO REFORÇADA
+========================================================== */
 
 function updateFlight(dt) {
 
@@ -1334,24 +1166,18 @@ function updateFlight(dt) {
 
     flight.throttle = clamp(flight.throttle, 0, 1);
 
-    // ACELERAÇÃO MELHORADA.
-    // O avião agora consegue alcançar velocidade de decolagem.
+    // Aceleração reforçada.
     const engineForce = flight.throttle * 52;
-
-    const airResistance =
-        flight.speed * flight.speed * 0.0017;
-
-    const rollingResistance =
-        flight.onGround ? 1.1 : 0.2;
+    const airResistance = flight.speed * flight.speed * 0.0017;
+    const rollingResistance = flight.onGround ? 1.1 : 0.2;
 
     const acceleration =
         engineForce - airResistance - rollingResistance;
 
     flight.speed += acceleration * dt;
+    flight.speed = clamp(flight.speed, 0, 333.33);
 
-    flight.speed = clamp(flight.speed, 0, 180);
-
-    // Controles de inclinação.
+    // Pitch e roll.
     const targetPitch = up
         ? 0.24
         : down
@@ -1383,8 +1209,7 @@ function updateFlight(dt) {
     flight.yaw +=
         flight.roll * speedFactor * dt * 0.32;
 
-    // Decolagem automática quando o avião tem velocidade
-    // suficiente e o piloto levanta o nariz.
+    // Decolagem.
     if (
         flight.onGround &&
         flight.speed >= 54 &&
@@ -1394,15 +1219,13 @@ function updateFlight(dt) {
         flight.onGround = false;
         flight.verticalSpeed = 2.5;
 
-        setStatus("DECOLAGEM — GEAR UP");
-
+        setStatus("DECOLAGEM — AERONAVE NO AR");
     }
 
-    // Física vertical.
+    // Sustentação e gravidade.
     if (!flight.onGround) {
 
-        const liftEffect =
-            speedFactor * 1.8;
+        const liftEffect = speedFactor * 1.8;
 
         const verticalAcceleration =
             flight.pitch * 28 + liftEffect - 1.2;
@@ -1419,7 +1242,6 @@ function updateFlight(dt) {
         aircraft.position.y +=
             flight.verticalSpeed * dt;
 
-        // Pouso simplificado.
         if (aircraft.position.y <= 3) {
 
             aircraft.position.y = 3;
@@ -1430,19 +1252,16 @@ function updateFlight(dt) {
                 flight.verticalSpeed = 0;
 
                 setStatus("AERONAVE NO SOLO");
-
             }
-
         }
 
     } else {
 
         aircraft.position.y = 3;
         flight.verticalSpeed = 0;
-
     }
 
-    // Movimento no espaço.
+    // Movimento horizontal.
     const forward = new THREE.Vector3(0, 0, -1);
 
     forward.applyAxisAngle(WORLD_UP, flight.yaw);
@@ -1453,33 +1272,29 @@ function updateFlight(dt) {
     aircraft.position.z +=
         forward.z * flight.speed * dt;
 
-    // Inclinação visual.
     aircraft.rotation.order = "YXZ";
 
     aircraft.rotation.y = flight.yaw;
     aircraft.rotation.x = flight.pitch;
     aircraft.rotation.z = flight.roll;
 
-    // Turbinas girando.
+    // Turbinas.
     engineFans.forEach(fan => {
         fan.rotation.z +=
             dt * (10 + flight.throttle * 55);
     });
 
-    // Atualiza altitude.
     flight.altitude = Math.max(
         0,
         aircraft.position.y - 3
     );
 
     updateHUD();
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    CÂMERAS
-========================================================= */
+========================================================== */
 
 function updateCamera(dt) {
 
@@ -1494,7 +1309,6 @@ function updateCamera(dt) {
 
     switch (flight.camera) {
 
-        // Câmera de perseguição.
         case 0:
 
             desiredPosition = aircraft.position.clone()
@@ -1506,7 +1320,6 @@ function updateCamera(dt) {
 
             break;
 
-        // Câmera lateral.
         case 1:
 
             desiredPosition = aircraft.position.clone()
@@ -1516,7 +1329,6 @@ function updateCamera(dt) {
 
             break;
 
-        // Cockpit.
         case 2:
 
             desiredPosition = aircraft.position.clone()
@@ -1528,7 +1340,6 @@ function updateCamera(dt) {
 
             break;
 
-        // Câmera cinematográfica.
         default:
 
             desiredPosition = aircraft.position.clone()
@@ -1537,7 +1348,6 @@ function updateCamera(dt) {
             target = aircraft.position.clone();
 
             break;
-
     }
 
     camera.position.lerp(
@@ -1551,13 +1361,11 @@ function updateCamera(dt) {
     );
 
     camera.lookAt(cameraTarget);
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    HUD
-========================================================= */
+========================================================== */
 
 function updateHUD() {
 
@@ -1572,13 +1380,11 @@ function updateHUD() {
 
     $("enginePower").textContent =
         Math.round(flight.throttle * 100);
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    STATUS
-========================================================= */
+========================================================== */
 
 function setStatus(message) {
 
@@ -1587,13 +1393,11 @@ function setStatus(message) {
     if (element) {
         element.textContent = message;
     }
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    LOOP PRINCIPAL
-========================================================= */
+========================================================== */
 
 function animate() {
 
@@ -1604,24 +1408,18 @@ function animate() {
     updateFlight(dt);
     updateCamera(dt);
 
-    // Movimento das nuvens.
     clouds.forEach((cloud, index) => {
-
-        cloud.position.x +=
-            Math.sin(index) * dt * 1.5;
-
+        cloud.position.x += Math.sin(index) * dt * 1.5;
     });
 
     if (renderer && scene && camera) {
         renderer.render(scene, camera);
     }
-
 }
 
-
-/* =========================================================
+/* ==========================================================
    REDIMENSIONAMENTO
-========================================================= */
+========================================================== */
 
 function resize() {
 
@@ -1640,13 +1438,11 @@ function resize() {
     renderer.setPixelRatio(
         Math.min(window.devicePixelRatio || 1, 1.7)
     );
-
 }
 
-
-/* =========================================================
-   TRATAMENTO DE ERROS
-========================================================= */
+/* ==========================================================
+   ERROS
+========================================================== */
 
 try {
 
@@ -1680,5 +1476,4 @@ try {
         error.message || String(error);
 
     document.body.appendChild(warning);
-
 }
